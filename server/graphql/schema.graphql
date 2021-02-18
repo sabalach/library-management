@@ -1,3 +1,73 @@
+scalar Date
+
+type Book {
+  id: ID!
+  name: String!
+  author: String!
+  isbn: String!
+  serialNumber: String!
+}
+
+enum Gender {
+  MALE,
+  FEMALE
+}
+
+type Student {
+  id: ID!
+  name: String!
+  class: Int!
+  serialNumber: String!
+  gender: Gender!
+  deleted: Boolean!
+}
+
+type BookLog {
+  id: ID!
+  student: Student!
+  borrowedDate: Date!
+  returnedDate: Date
+}
+
 type Query {
-  hello:String!
+  hello: String!
+
+  getBooks: [Book]
+  getBook(id: ID!): Book!
+
+  getStudents: [Student]
+  getStudent(id: ID!): Student!
+
+  getBookLogs: [BookLog]
+  getBookLog(id: ID!): BookLog!
+}
+
+type Mutation {
+  addBook(
+    name: String!,
+    author: String!,
+    isbn: String!
+  ): Book!
+  updateBook(
+    id: ID!,
+    name: String,
+    author: String,
+    isbn: String
+  ): Book!
+  deleteBook(id: ID!): Boolean!
+
+  addStudent(
+    name: String!,
+    class: Int!,
+    gender: Gender!,
+  ): Student!
+  updateStudent(
+    name: String,
+    class: Int,
+    gender: Gender,
+  ): Student!
+  deleteStudent(id: ID!): Boolean!
+
+  borrowBook(studentId: ID!, bookId: ID!): BookLog!
+  returnBook(bookLogId: ID!): BookLog!
 }

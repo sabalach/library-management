@@ -6,13 +6,17 @@
     "start": "NODE_ENV=production node server/index.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.5.0",
+    "antd": "^4.12.3",
     "apollo-server-express": "^2.19.2",
     "express": "^4.17.1",
+    "mongoose": "^5.11.16",
     "next": "^10.0.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
