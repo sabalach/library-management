@@ -16,15 +16,15 @@ enum Gender {
 type Student {
   id: ID!
   name: String!
-  class: Int!
+  grade: Int!
   serialNumber: String!
   gender: Gender!
-  deleted: Boolean!
 }
 
 type BookLog {
   id: ID!
   student: Student!
+  book: Book!
   borrowedDate: Date!
   returnedDate: Date
 }
@@ -58,16 +58,17 @@ type Mutation {
 
   addStudent(
     name: String!,
-    class: Int!,
+    grade: Int!,
     gender: Gender!,
   ): Student!
   updateStudent(
+    id:ID!,
     name: String,
-    class: Int,
+    grade: Int,
     gender: Gender,
   ): Student!
   deleteStudent(id: ID!): Boolean!
 
-  borrowBook(studentId: ID!, bookId: ID!): BookLog!
-  returnBook(bookLogId: ID!): BookLog!
+  borrowBook(studentSerialNumber: String!, bookSerialNumber: String!): BookLog!
+  returnBook(bookSerialNumber: String!): BookLog!
 }

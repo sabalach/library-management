@@ -5,6 +5,10 @@ const BookLogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
   },
+  bookId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+  },
   borrowedDate: Date,
   returnedDate: Date,
 });
