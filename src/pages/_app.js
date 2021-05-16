@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 import { ApolloProvider } from '@apollo/client/react';
 import { useRef } from 'react';
+import NextNprogress from 'nextjs-progressbar';
 import CurrentStudentContext from '../contexts/CurrentStudent';
 
 const client = new ApolloClient({
@@ -22,6 +23,12 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <CurrentStudentContext.Provider value={{ currentStudent, setCurrentStudent }}>
+        <NextNprogress
+          color="#29D"
+          startPosition={0.3}
+          stopDelayMs={200}
+          height="3"
+        />
         <Component {...pageProps} />
       </CurrentStudentContext.Provider>
     </ApolloProvider>

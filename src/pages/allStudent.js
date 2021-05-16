@@ -139,8 +139,8 @@ const columns = [
                           padding: 0,
                         }}
                         onClick={() => {
-                          message.destroy('currentStudent');
                           setCurrentStudent(null);
+                          message.destroy('currentStudent');
                         }}
                       >
                         <CloseCircleFilled style={{ fontSize: '18px', color: '#ff4d4f' }} />

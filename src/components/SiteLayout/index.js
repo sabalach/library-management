@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import {
   BookFilled,
+  ContactsFilled,
   DatabaseFilled,
   UserOutlined,
 } from '@ant-design/icons';
@@ -36,12 +37,12 @@ function SiteLayout({ children, selectedKeys = ['1'], subTitle = '' }) {
           defaultSelectedKeys={['student']}
           mode="inline"
           selectedKeys={selectedKeys}
-          defaultOpenKeys={['student', 'book']}
+          defaultOpenKeys={['student', 'book', 'booklog']}
           onSelect={({ key }) => {
             router.push(`/${key}`);
           }}
         >
-          <SubMenu key="student" icon={<UserOutlined />} title="Student">
+          <SubMenu key="student" icon={<ContactsFilled />} title="Student">
             <Menu.Item key="allStudent">All</Menu.Item>
             <Menu.Item key="addStudent">Add</Menu.Item>
             <Menu.Item key="editStudent" disabled>Edit</Menu.Item>
@@ -53,8 +54,6 @@ function SiteLayout({ children, selectedKeys = ['1'], subTitle = '' }) {
           </SubMenu>
           <SubMenu key="booklog" icon={<DatabaseFilled />} title="Logs">
             <Menu.Item key="allBooklog">All</Menu.Item>
-            <Menu.Item key="borrow">Borrow</Menu.Item>
-            <Menu.Item key="return" disabled>Return</Menu.Item>
           </SubMenu>
         </Menu>
       </Sider>

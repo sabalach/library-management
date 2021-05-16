@@ -6,7 +6,7 @@ const Student = require('../../db/Student');
 module.exports = {
   Query: {
     async getBookLogs() {
-      return BookLog.find({});
+      return BookLog.find({}).sort({ returnedDate: 1 });
     },
     async getBookLog(_, { id }) {
       return BookLog.findById(id);

@@ -182,6 +182,26 @@ export const GET_BOOK_LOGS = gql`
         name
         author
         isbn
+        serialNumber
+      }
+      borrowedDate
+      returnedDate
+    }
+  }
+`;
+
+export const RETURN_BOOK = gql`
+  mutation ReturnBook($bookSerialNumber:String!){
+    returnBook(bookSerialNumber:$bookSerialNumber){
+      id
+      student{
+        id
+        name
+      }
+      book{
+        name
+        author
+        serialNumber
       }
       borrowedDate
       returnedDate

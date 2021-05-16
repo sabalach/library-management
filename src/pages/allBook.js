@@ -10,7 +10,9 @@ import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import SiteLayout from '../components/SiteLayout';
 import CurrentStudentContext from '../contexts/CurrentStudent';
-import { BORROW_BOOK, DELETE_BOOK, GET_BOOKS } from '../queries';
+import {
+  BORROW_BOOK, DELETE_BOOK, GET_BOOKS, GET_BOOK_LOGS,
+} from '../queries';
 
 const columns = [
   {
@@ -76,7 +78,7 @@ const columns = [
     key: 'action',
     render: (text, record) => {
       const router = useRouter();
-      const { currentStudent } = useContext(CurrentStudentContext);
+      const { currentStudent, setCurrentStudent } = useContext(CurrentStudentContext);
       const [deleteStudent, { loading }] = useMutation(DELETE_BOOK, {
         update(cache) {
           const existingBooks = cache.readQuery({ query: GET_BOOKS }).getBooks;
@@ -87,7 +89,9 @@ const columns = [
           });
         },
       });
-      const [borrowBook] = useMutation(BORROW_BOOK);
+      const [borrowBook] = useMutation(BORROW_BOOK, {
+        refetchQueries: [{ query: GET_BOOK_LOGS }],
+      });
       return (
         <Space size="small" key={record.id}>
           <Button
@@ -135,6 +139,7 @@ const columns = [
                 });
                 message.success('Sucessfully Borrowed');
                 message.destroy('currentStudent');
+                setCurrentStudent(null);
               } catch (error) {
                 message.error(error.message);
               }
