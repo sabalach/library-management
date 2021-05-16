@@ -62,7 +62,7 @@ const columns = [
     }) => (
       <div style={{ padding: 8 }}>
         <Input
-          placeholder="Search Book Name"
+          placeholder="Search Student Name"
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           style={{ width: 188, marginBottom: 8, display: 'block' }}

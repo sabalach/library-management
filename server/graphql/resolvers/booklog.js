@@ -31,7 +31,6 @@ module.exports = {
         throw new UserInputError('Book not found.');
       }
       const existingBookLog = await BookLog.findOne({
-        studentId: student._id,
         bookId: book._id,
         returnedDate: null,
       });
