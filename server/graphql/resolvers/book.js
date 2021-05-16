@@ -3,7 +3,7 @@ const Book = require('../../db/Book');
 module.exports = {
   Query: {
     async getBooks() {
-      return Book.find({});
+      return Book.find({ deleted: false });
     },
     async getBook(_, { id }) {
       return Book.findById(id);
@@ -16,6 +16,7 @@ module.exports = {
         author,
         isbn,
         serialNumber: (new Date()).getTime().toString(),
+        deleted: false,
       });
       const res = await newBook.save();
       return {
@@ -33,7 +34,9 @@ module.exports = {
       };
     },
     async deleteBook(_, { id }) {
-      await Book.findByIdAndDelete(id);
+      await Book.findByIdAndUpdate(id, {
+        deleted: true,
+      }, { new: true });
       return true;
     },
   },

@@ -3,7 +3,7 @@ const Student = require('../../db/Student');
 module.exports = {
   Query: {
     async getStudents() {
-      return Student.find({});
+      return Student.find({ deleted: false });
     },
     async getStudent(_, { id }) {
       return Student.findById(id);
@@ -16,6 +16,7 @@ module.exports = {
         grade,
         gender,
         serialNumber: (new Date()).getTime().toString(),
+        deleted: false,
       });
       const res = await newStudent.save();
       return {
@@ -33,7 +34,9 @@ module.exports = {
       };
     },
     async deleteStudent(_, { id }) {
-      await Student.findByIdAndDelete(id);
+      await Student.findByIdAndUpdate(id, {
+        deleted: true,
+      }, { new: true });
       return true;
     },
   },

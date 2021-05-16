@@ -9,6 +9,7 @@ const BookSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  deleted: Boolean,
 });
 
 module.exports = mongoose.model('Book', BookSchema);

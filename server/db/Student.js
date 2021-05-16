@@ -8,6 +8,7 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     enum: ['MALE', 'FEMALE'],
   },
+  deleted: Boolean,
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
