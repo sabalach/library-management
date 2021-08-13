@@ -1,25 +1,39 @@
 import { gql } from '@apollo/client';
 
 export const GET_BOOKS = gql`
-  {
-    getBooks{
+  query GetBooks($condition:BookCondition){
+    getBooks(condition:$condition){
       id
       name
       author
       isbn
       serialNumber
+      condition
     }
   }
 `;
 
 export const GET_STUDENTS = gql`
-  {
+  query GetStudents{
     getStudents{
       id
       name
-      grade
       serialNumber
       gender
+      level{
+        id
+        name
+        abbreviation
+      }
+      department{
+        id
+        name
+        abbreviation
+      }
+      photo
+      address
+      dob
+      validUpto
     }
   }
 `;
@@ -28,18 +42,21 @@ export const ADD_BOOK = gql`
   mutation AddBook(
     $name:String!,
     $author:String!,
-    $isbn:String!
+    $isbn:String!,
+    $condition:BookCondition!
   ){
     addBook(
       name:$name,
       author:$author,
-      isbn:$isbn
+      isbn:$isbn,
+      condition:$condition
     ){
       id
       name
       author
       isbn
       serialNumber
+      condition
     }
   }
 `;
@@ -47,19 +64,42 @@ export const ADD_BOOK = gql`
 export const ADD_STUDENT = gql`
   mutation AddStudent(
     $name:String!,
-    $grade:Int!,
-    $gender:Gender!
+    $gender:Gender!,
+    $levelId: ID!,
+    $departmentId: ID!,
+    $address:String,
+    $dob:String,
+    $photo: Upload,
+    $validUpto:String
   ){
     addStudent(
       name:$name,
-      grade:$grade,
-      gender:$gender
+      gender:$gender,
+      levelId:$levelId,
+      departmentId:$departmentId,
+      photo:$photo,
+      address:$address,
+      dob:$dob,
+      validUpto:$validUpto
     ){
       id
       name
-      grade
       serialNumber
       gender
+      level{
+        id
+        name
+        abbreviation
+      }
+      department{
+        id
+        name
+        abbreviation
+      }
+      photo
+      address
+      dob
+      validUpto
     }
   }
 `;
@@ -75,9 +115,22 @@ export const GET_STUDENT = gql`
     getStudent(id:$id){
       id
       name
-      grade
       serialNumber
       gender
+      level{
+        id
+        name
+        abbreviation
+      }
+      department{
+        id
+        name
+        abbreviation
+      }
+      photo
+      address
+      dob
+      validUpto
     }
   }
 `;
@@ -86,20 +139,43 @@ export const UPDATE_STUDENT = gql`
   mutation UpdateStudent(
     $id:ID!,
     $name:String,
-    $grade:Int,
-    $gender:Gender!
+    $gender:Gender,
+    $levelId: ID,
+    $departmentId: ID,
+    $address:String,
+    $dob:String,
+    $photo:Upload,
+    $validUpto:String
   ){
     updateStudent(
       id:$id,
       name:$name,
-      grade:$grade,
       gender:$gender
+      levelId:$levelId,
+      departmentId:$departmentId,
+      address:$address,
+      dob:$dob,
+      photo: $photo,
+      validUpto:$validUpto
     ){
       id
       name
-      grade
       serialNumber
       gender
+      level{
+        id
+        name
+        abbreviation
+      }
+      department{
+        id
+        name
+        abbreviation
+      }
+      photo
+      address
+      dob
+      validUpto
     }
   }
 `;
@@ -118,6 +194,7 @@ export const GET_BOOK = gql`
       author
       isbn
       serialNumber
+      condition
     }
   }
 `;
@@ -127,19 +204,22 @@ export const UPDATE_BOOK = gql`
     $id:ID!,
     $name:String,
     $author:String,
-    $isbn:String
+    $isbn:String,
+    $condition:BookCondition
   ){
     updateBook(
       id:$id,
       name:$name,
       author:$author,
-      isbn:$isbn
+      isbn:$isbn,
+      condition:$condition
     ){
       id
       name
       author
       isbn
       serialNumber
+      condition
     }
   }
 `;
@@ -169,13 +249,13 @@ export const BORROW_BOOK = gql`
 `;
 
 export const GET_BOOK_LOGS = gql`
-  {
-    getBookLogs{
+  query GetBookLogs($studentSerialNumber:String){
+    getBookLogs(studentSerialNumber:$studentSerialNumber){
       id
       student{
         id
         name
-        grade
+        serialNumber
       }
       book{
         id
@@ -183,9 +263,11 @@ export const GET_BOOK_LOGS = gql`
         author
         isbn
         serialNumber
+        condition
       }
       borrowedDate
       returnedDate
+      paidFine
     }
   }
 `;
@@ -205,6 +287,157 @@ export const RETURN_BOOK = gql`
       }
       borrowedDate
       returnedDate
+    }
+  }
+`;
+
+export const GET_LEVELS = gql`
+  query GetLevels{
+    getLevels{
+      id
+      name
+      abbreviation
+    }
+  }
+`;
+
+export const ADD_LEVEL = gql`
+  mutation AddLevel(
+    $name: String!,
+    $abbreviation: String!
+  ){
+    addLevel(
+      name:$name,
+      abbreviation:$abbreviation
+    ){
+      id
+      name
+      abbreviation
+    }
+  }
+`;
+
+export const GET_DEPARTMENTS = gql`
+  query GetDepartments{
+    getDepartments{
+      id
+      name
+      abbreviation
+    }
+  }
+`;
+
+export const ADD_DEPARTMENT = gql`
+  mutation AddDepartment(
+    $name: String!,
+    $abbreviation: String!
+  ){
+    addDepartment(
+      name:$name,
+      abbreviation:$abbreviation
+    ){
+      id
+      name
+      abbreviation
+    }
+  }
+`;
+
+export const LOGO_UPLOAD = gql`
+  mutation EditLogo($logo:Upload!){
+    logoUpload(logo:$logo)
+  }
+`;
+
+export const GET_CONFIG = gql`
+  query GetConfig{
+    getConfig{
+      institutionName
+      institutionLocation
+      institutionContact
+      studentLimit
+      fineAfter
+    }
+  }
+`;
+
+export const SET_CONFIG = gql`
+  mutation SetConfig(
+    $institutionName:String,
+    $institutionLocation:String,
+    $institutionContact:String,
+    $studentLimit: Int,
+    $fineAfter: Int
+  ){
+    setConfig(
+      institutionName:$institutionName,
+      institutionLocation:$institutionLocation,
+      institutionContact:$institutionContact,
+      studentLimit:$studentLimit,
+      fineAfter:$fineAfter,
+    ){
+      institutionName
+      institutionLocation
+      institutionContact
+    }
+  }
+`;
+
+export const QUICK_BORROW = gql`
+  mutation QuickBorrow(
+    $studentSerialNumber:String!,
+    $bookSerialNumber:String!
+  ){
+    quickBorrow(
+      studentSerialNumber:$studentSerialNumber,
+      bookSerialNumber:$bookSerialNumber
+    ){
+      id
+      student{
+        id
+        name
+      }
+      book{
+        id
+        name
+      }
+      borrowedDate
+      paidFine
+      returnedDate
+    }
+  }
+`;
+
+export const PAY_BOOK_FINE = gql`
+  mutation PayBookFine($bookLogId:ID!){
+    payBookFine(bookLogId:$bookLogId){
+      id
+      student{
+        id
+        name
+        serialNumber
+      }
+      book{
+        id
+        name
+        author
+        isbn
+        serialNumber
+        condition
+      }
+      borrowedDate
+      returnedDate
+      paidFine
+    }
+  }
+`;
+
+export const GET_STATS = gql`
+  query GetStats{
+    getStats{
+      totalBooks
+      totalStudents
+      borrowedBooks
     }
   }
 `;

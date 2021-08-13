@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import {
-  Form, Input, Button, Card,
+  Form, Input, Button, Card, Select,
 } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { EditOutlined } from '@ant-design/icons';
-import SiteLayout from '../components/SiteLayout';
 import { GET_BOOK, UPDATE_BOOK } from '../queries';
+
+const { Option } = Select;
 
 const layout = {
   labelCol: { span: 3 },
@@ -38,6 +39,7 @@ function EditStudent() {
       name: book.name,
       author: book.author,
       isbn: book.isbn,
+      condition: book.condition,
     });
   }, [book]);
 
@@ -58,7 +60,7 @@ function EditStudent() {
   };
 
   return (
-    <SiteLayout selectedKeys={['student', 'editStudent']} subTitle="Edit Student">
+    <>
       <br />
       <Card>
         <Form
@@ -94,6 +96,19 @@ function EditStudent() {
             <Input />
           </Form.Item>
 
+          <Form.Item
+            label="Condition"
+            name="condition"
+            rules={[{ required: true, message: 'Please input condition!' }]}
+          >
+            <Select style={{ width: 120 }}>
+              <Option value="NEW">New</Option>
+              <Option value="OLD">Old</Option>
+              <Option value="DAMAGED">Damaged</Option>
+              <Option value="LOST">Lost</Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item {...tailLayout}>
             <Button shape="round" icon={<EditOutlined />} type="primary" htmlType="submit">
               Edit
@@ -101,7 +116,7 @@ function EditStudent() {
           </Form.Item>
         </Form>
       </Card>
-    </SiteLayout>
+    </>
   );
 }
 

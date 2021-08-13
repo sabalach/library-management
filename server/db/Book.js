@@ -4,6 +4,7 @@ const BookSchema = new mongoose.Schema({
   name: String,
   author: String,
   isbn: String,
+  condition: String,
   serialNumber: {
     type: String,
     required: true,

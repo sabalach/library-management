@@ -2,13 +2,15 @@
 import React from 'react';
 import {
   Form, Input, Button, Card, Select,
-  InputNumber,
 } from 'antd';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
-import SiteLayout from '../components/SiteLayout';
-import { ADD_STUDENT, GET_STUDENTS } from '../queries';
+
+import {
+  ADD_STUDENT, GET_DEPARTMENTS, GET_LEVELS, GET_STUDENTS,
+} from '../queries';
+import ImageUpload from '../components/ImgUpload';
 
 const { Option } = Select;
 
@@ -24,13 +26,21 @@ function AddStudent() {
   const [addStudent] = useMutation(ADD_STUDENT, {
     refetchQueries: [{ query: GET_STUDENTS }],
   });
+
+  const {
+    data: { getLevels: levels } = { levels: [] },
+  } = useQuery(GET_LEVELS);
+
+  const {
+    data: { getDepartments: departments } = { departments: [] },
+  } = useQuery(GET_DEPARTMENTS);
+
   const router = useRouter();
 
   const onFinish = async (values) => {
     await addStudent({
       variables: {
         ...values,
-        grade: parseInt(values.grade, 10),
       },
     });
     router.push('/allStudent');
@@ -41,7 +51,7 @@ function AddStudent() {
   };
 
   return (
-    <SiteLayout selectedKeys={['student', 'addStudent']} subTitle="Add Student">
+    <>
       <br />
       <Card>
         <Form
@@ -61,11 +71,11 @@ function AddStudent() {
           </Form.Item>
 
           <Form.Item
-            label="Grade"
-            name="grade"
-            rules={[{ required: true, message: 'Please input grade!' }]}
+            label="Photo"
+            name="photo"
+            rules={[{ required: true, message: 'Please input name!' }]}
           >
-            <InputNumber />
+            <ImageUpload />
           </Form.Item>
 
           <Form.Item
@@ -79,6 +89,52 @@ function AddStudent() {
             </Select>
           </Form.Item>
 
+          <Form.Item
+            label="Level"
+            name="levelId"
+            rules={[{ required: false, message: 'Please input level' }]}
+          >
+            <Select style={{ width: 120 }}>
+              {(levels || []).map(
+                level => <Option key={level.id} value={level.id}>{level.name}</Option>,
+              )}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Department"
+            name="departmentId"
+            rules={[{ required: true, message: 'Please input department' }]}
+          >
+            <Select style={{ width: 120 }}>
+              {(departments || []).map(department => (
+                <Option key={department.id} value={department.id}>{department.name}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Address"
+            name="address"
+            rules={[{ required: true, message: 'Please input address' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Date of Birth"
+            name="dob"
+            rules={[{ required: true, message: 'Please input dob' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Valid Upto"
+            name="validUpto"
+            rules={[{ required: true, message: 'Please input dob' }]}
+          >
+            <Input />
+          </Form.Item>
+
           <Form.Item {...tailLayout}>
             <Button shape="round" icon={<PlusOutlined />} type="primary" htmlType="submit">
               Add
@@ -86,7 +142,7 @@ function AddStudent() {
           </Form.Item>
         </Form>
       </Card>
-    </SiteLayout>
+    </>
   );
 }
 

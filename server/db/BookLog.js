@@ -11,6 +11,7 @@ const BookLogSchema = new mongoose.Schema({
   },
   borrowedDate: Date,
   returnedDate: Date,
+  paidFine: Boolean,
 });
 
 module.exports = mongoose.model('BookLog', BookLogSchema);

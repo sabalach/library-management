@@ -2,19 +2,32 @@ const Book = require('../../db/Book');
 
 module.exports = {
   Query: {
-    async getBooks() {
-      return Book.find({ deleted: false });
+    async getBooks(_, { condition }) {
+      let query = { deleted: false };
+      if (condition) {
+        query = {
+          ...query,
+          condition,
+        };
+      }
+      return Book.find(query);
     },
     async getBook(_, { id }) {
       return Book.findById(id);
     },
   },
   Mutation: {
-    async addBook(_, { name, author, isbn }) {
+    async addBook(_, {
+      name, author, isbn, condition,
+    }) {
+      console.log({
+        name, author, isbn, condition,
+      });
       const newBook = new Book({
         name,
         author,
         isbn,
+        condition,
         serialNumber: (new Date()).getTime().toString(),
         deleted: false,
       });

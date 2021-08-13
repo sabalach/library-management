@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Id Cards</title>
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <style>
+    body {
+      font-family: 'Poppins';
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .container{
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+
+
+      border-width: 1mm;
+      border-style: solid;
+      border-color: #CFD8DC;
+      width: 51mm;
+      height: 83.9mm;
+
+      text-align: center;
+      background: #fff;
+      /* background: linear-gradient(121deg, rgba(222,221,244,1) 0%, rgba(217,255,204,1) 35%, rgba(103,229,255,1) 100%); */
+    }
+    .card {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    .avatar {
+      vertical-align: middle;
+      width: 23mm;
+      height: 23mm;
+      border-radius: 50%;
+      margin-top: 18mm;
+      border-style: solid;
+      border-width: .6mm;
+      border-color: #1565C0;
+    }
+    .info {
+      width: 100%;
+      font-size: 2.1mm;
+      color: #0D47A1;
+      font-weight: 800;
+      text-align: left;
+      padding-top: 2mm;
+      padding-left: 3mm;
+      padding-right: 2mm;
+      padding-bottom: 2mm;
+    }
+    .info tr td:first-child {
+      color: #B71C1C;
+    }
+    .logo {
+      height: 10mm;
+      width: 10mm;
+      margin: 2mm;
+      margin-bottom: 0;
+      padding: 1mm;
+      border-radius: 1.2mm;
+      background-color: #fff;
+    }
+    .footer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 15.5mm;
+      background-color: #1565C0;
+    }
+    .footer > div {
+      display: flex;
+      flex-direction: row;
+    }
+    .footertext {
+      margin: 0;
+      padding: 0;
+      padding-top: 3mm;
+      padding-left: 2mm;
+      color: #fff;
+      font-size: 2.1mm;
+      text-align: left;
+    }
+    .barcode {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <div class="card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuvCqGdVfqj4itAhx0zo3PskdZTiIJsmJNtyoCE5onA5MyH9gCPNXZ9ohP-BpEsJ0ThbY&usqp=CAU" alt="Avatar" class="avatar">
+        <table class="info">
+          <tr>
+            <td>Name:</td>
+            <td>Jasmine Gurung</td>
+          </tr>
+          <tr>
+            <td>Gender:</td>
+            <td>FEMALE</td>
+          </tr>
+          <tr>
+            <td>Department:</td>
+            <td>Biology</td>
+          </tr>
+          <tr>
+            <td>Address:</td>
+            <td>Bouddha, Kathmandu</td>
+          </tr>
+          <tr>
+            <td>DOB:</td>
+            <td>2077/01/02</td>
+          </tr>
+        </table>
+        <svg id="barcode" class="barcode"></svg>
+  
+        <div class="footer">
+          <div>
+            <div>
+              <img src="https://bnks.edu.np/uploads/user/user-20191229061646-552.png" class="logo">
+            </div>
+            <div>
+              <p class="footertext">
+                ABC School<br>
+                Chabahill, Kathmandu<br>
+                P.O Box 1018
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/barcodes/JsBarcode.code39.min.js"></script>
+  <script>
+    JsBarcode("#barcode", "G1B10005", {
+      width:1.14,
+      height:25,
+      fontSize: 8,
+      margin: 6,
+    });
+  </script>
+</body>
+</html>

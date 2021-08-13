@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import {
-  Form, Input, Button, Card,
+  Form, Input, Button, Card, Select,
 } from 'antd';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
-import SiteLayout from '../components/SiteLayout';
 import { ADD_BOOK, GET_BOOKS } from '../queries';
+
+const { Option } = Select;
 
 const layout = {
   labelCol: { span: 3 },
@@ -35,7 +36,7 @@ function AddBook() {
   };
 
   return (
-    <SiteLayout selectedKeys={['book', 'addBook']} subTitle="Add Book">
+    <>
       <br />
       <Card>
         <Form
@@ -70,6 +71,19 @@ function AddBook() {
             <Input />
           </Form.Item>
 
+          <Form.Item
+            label="Condition"
+            name="condition"
+            rules={[{ required: true, message: 'Please input condition!' }]}
+          >
+            <Select style={{ width: 120 }}>
+              <Option value="NEW">New</Option>
+              <Option value="OLD">Old</Option>
+              <Option value="DAMAGED">Damaged</Option>
+              <Option value="LOST">Lost</Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item {...tailLayout}>
             <Button shape="round" icon={<PlusOutlined />} type="primary" htmlType="submit">
               Add
@@ -77,7 +91,7 @@ function AddBook() {
           </Form.Item>
         </Form>
       </Card>
-    </SiteLayout>
+    </>
   );
 }
 

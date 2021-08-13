@@ -1,4 +1,24 @@
 scalar Date
+scalar Upload
+
+type Department {
+  id: ID!
+  name: String!
+  abbreviation: String!
+}
+
+type Level {
+  id: ID!
+  name: String!
+  abbreviation: String!
+}
+
+enum BookCondition {
+  NEW,
+  OLD,
+  DAMAGED,
+  LOST
+}
 
 type Book {
   id: ID!
@@ -6,6 +26,7 @@ type Book {
   author: String!
   isbn: String!
   serialNumber: String!
+  condition: BookCondition!
 }
 
 enum Gender {
@@ -16,9 +37,14 @@ enum Gender {
 type Student {
   id: ID!
   name: String!
-  grade: Int!
   serialNumber: String!
   gender: Gender!
+  level: Level
+  department: Department!
+  photo: ID
+  address: String
+  dob: String
+  validUpto: String
 }
 
 type BookLog {
@@ -26,49 +52,102 @@ type BookLog {
   student: Student!
   book: Book!
   borrowedDate: Date!
+  paidFine: Boolean
   returnedDate: Date
+}
+
+type Config {
+  institutionName: String
+  institutionLocation: String
+  institutionContact: String
+  studentLimit: Int
+  fineAfter: Int
+}
+
+type Stats {
+  totalBooks: Int
+  totalStudents: Int
+  borrowedBooks: Int
 }
 
 type Query {
   hello: String!
 
-  getBooks: [Book]
+  getBooks(condition: BookCondition): [Book]
   getBook(id: ID!): Book!
 
   getStudents: [Student]
   getStudent(id: ID!): Student!
 
-  getBookLogs: [BookLog]
+  getBookLogs(studentSerialNumber: String): [BookLog]
   getBookLog(id: ID!): BookLog!
+
+  getLevel: Level
+  getLevels: [Level]
+  getDepartment: Department
+  getDepartments: [Department]
+  getConfig:Config
+  getStats:Stats
 }
 
 type Mutation {
+  addLevel(name: String!, abbreviation: String!): Level!
+  updateLevel(id: ID!, name: String, abbreviation: String): Level!
+  deleteLevel(id: ID!): Boolean!
+  
+  addDepartment(name: String!, abbreviation: String!): Level!
+  updateDepartment(id: ID!, name: String, abbreviation: String): Level!
+  deleteDepartment(id: ID!): Boolean!
+
   addBook(
     name: String!,
     author: String!,
     isbn: String!
+    condition: BookCondition!
   ): Book!
   updateBook(
     id: ID!,
     name: String,
     author: String,
     isbn: String
+    condition: BookCondition
   ): Book!
   deleteBook(id: ID!): Boolean!
+  
 
   addStudent(
     name: String!,
-    grade: Int!,
     gender: Gender!,
+    levelId: ID,
+    departmentId: ID!,
+    address: String,
+    dob: String,
+    photo: Upload,
+    validUpto: String
   ): Student!
   updateStudent(
     id:ID!,
     name: String,
-    grade: Int,
     gender: Gender,
+    levelId: ID,
+    departmentId: ID,
+    address: String,
+    dob: String,
+    photo: Upload,
+    validUpto: String
   ): Student!
   deleteStudent(id: ID!): Boolean!
 
+  quickBorrow(studentSerialNumber: String!, bookSerialNumber: String!): BookLog!
   borrowBook(studentSerialNumber: String!, bookSerialNumber: String!): BookLog!
   returnBook(bookSerialNumber: String!): BookLog!
+  payBookFine(bookLogId: ID!): BookLog!
+  logoUpload(logo: Upload!): Boolean!
+  setConfig(
+    institutionName: String,
+    institutionLocation: String,
+    institutionContact: String,
+    studentLimit: Int,
+    fineAfter: Int
+  ):Config
 }

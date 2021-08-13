@@ -1,14 +1,19 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import 'antd/dist/antd.dark.css'; // or 'antd/dist/antd.less'
+import '../css/main.css';
+
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 import { ApolloProvider } from '@apollo/client/react';
 import { useRef } from 'react';
 import NextNprogress from 'nextjs-progressbar';
+import createUploadLink from 'apollo-upload-client/public/createUploadLink';
 import CurrentStudentContext from '../contexts/CurrentStudent';
+import SiteLayout from '../components/SiteLayout';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
+  link: createUploadLink(),
   cache: new InMemoryCache(),
 });
 
@@ -29,7 +34,9 @@ export default function MyApp({ Component, pageProps }) {
           stopDelayMs={200}
           height="3"
         />
-        <Component {...pageProps} />
+        <SiteLayout>
+          <Component {...pageProps} />
+        </SiteLayout>
       </CurrentStudentContext.Provider>
     </ApolloProvider>
   );

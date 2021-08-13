@@ -1,15 +1,15 @@
 import {
   CheckOutlined,
   CloseCircleFilled,
-  DeleteOutlined, EditOutlined, LoadingOutlined, SearchOutlined,
+  DeleteOutlined, EditOutlined, EyeOutlined, LoadingOutlined, SearchOutlined,
 } from '@ant-design/icons';
 import { useMutation, useQuery } from '@apollo/client';
 import {
   Button, Card, Input, message, Space, Table,
 } from 'antd';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
-import SiteLayout from '../components/SiteLayout';
+import React, { useContext, useMemo, useState } from 'react';
+import IdCardModal from '../components/IdCardModal';
 import CurrentStudentContext from '../contexts/CurrentStudent';
 import { DELETE_STUDENT, GET_STUDENTS } from '../queries';
 
@@ -58,19 +58,37 @@ const columns = [
       : ''),
   },
   {
-    title: 'Grade',
-    dataIndex: 'grade',
-    key: 'grade',
-  },
-  {
     title: 'Serial Number',
     dataIndex: 'serialNumber',
     key: 'serialNumber',
+    render: (serialNum, record) => `${record.level.abbreviation}${record.department.abbreviation}${serialNum}`,
   },
   {
     title: 'Gender',
     dataIndex: 'gender',
     key: 'gender',
+  },
+  {
+    title: 'Level',
+    dataIndex: 'level',
+    key: 'level',
+    render: level => level.name,
+  },
+  {
+    title: 'Department',
+    dataIndex: 'department',
+    key: 'department',
+    render: department => department.name,
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: 'DOB',
+    dataIndex: 'dob',
+    key: 'dob',
   },
   {
     title: 'Action',
@@ -90,6 +108,15 @@ const columns = [
       });
       return (
         <Space size="small" key={record.id}>
+          <Button
+            type="primary"
+            shape="circle"
+            style={{ borderWidth: '0px', backgroundColor: '#FF6F00', color: '#fff' }}
+            icon={<EyeOutlined />}
+            onClick={() => {
+              record.viewId();
+            }}
+          />
           <Button
             type="primary"
             shape="circle"
@@ -179,20 +206,29 @@ const columns = [
 ];
 
 function AllStudent() {
+  const [currentIdCard, setCurrentIdCard] = useState(null);
   const {
     data: { getStudents: students } = { getStudents: [] },
   } = useQuery(GET_STUDENTS);
 
+  const data = useMemo(() => students.map(std => ({
+    ...std,
+    viewId: () => {
+      setCurrentIdCard(std);
+    },
+  })), [students]);
+
   return (
-    <SiteLayout selectedKeys={['student', 'allStudent']} subTitle="All Student">
+    <>
       <br />
       <Table
-        dataSource={students}
+        dataSource={data}
         columns={columns}
         size="middle"
         pagination={{ defaultPageSize: 8 }}
       />
-    </SiteLayout>
+      <IdCardModal currentIdCard={currentIdCard} setCurrentIdCard={setCurrentIdCard} />
+    </>
   );
 }
 

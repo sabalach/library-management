@@ -1,6 +1,18 @@
 const Student = require('../../db/Student');
+const Level = require('../../db/Level');
+const Department = require('../../db/Department');
+const uploadFile = require('../../utils/uploadFile');
+const cleanObj = require('../../utils/cleanObj');
 
 module.exports = {
+  Student: {
+    async level(parent) {
+      return Level.findById(parent.levelId);
+    },
+    async department(parent) {
+      return Department.findById(parent.departmentId);
+    },
+  },
   Query: {
     async getStudents() {
       return Student.find({ deleted: false });
@@ -10,24 +22,43 @@ module.exports = {
     },
   },
   Mutation: {
-    async addStudent(_, { name, grade, gender }) {
+    async addStudent(_, {
+      name, gender, levelId, departmentId, address, dob, photo, validUpto,
+    }) {
+      let photoId;
+      if (photo) {
+        const { id } = await uploadFile(photo);
+        photoId = id;
+      }
       const newStudent = new Student({
         name,
-        grade,
         gender,
-        serialNumber: (new Date()).getTime().toString(),
         deleted: false,
+        levelId,
+        departmentId,
+        address,
+        dob,
+        photo: photoId,
+        validUpto,
       });
       const res = await newStudent.save();
+
       return {
         id: res._id,
         ...res._doc,
       };
     },
-    async updateStudent(_, { id, ...args }) {
-      const res = await Student.findByIdAndUpdate(id, {
+    async updateStudent(_, { id, photo, ...args }) {
+      let photoId;
+      if (photo) {
+        const { id: pid } = await uploadFile(photo);
+        photoId = pid;
+      }
+      const updates = {
         ...args,
-      }, { new: true });
+        photo: photoId,
+      };
+      const res = await Student.findByIdAndUpdate(id, cleanObj(updates), { new: true });
       return {
         id: res._id,
         ...res._doc,

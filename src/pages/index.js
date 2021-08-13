@@ -1,11 +1,13 @@
-import React from 'react';
-import SiteLayout from '../components/SiteLayout';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 function Main() {
+  const router = useRouter();
+  useEffect(() => {
+    router.push('/dashboard');
+  }, []);
   return (
-    <SiteLayout selectedKeys={[]}>
-      <div>Sabal</div>
-    </SiteLayout>
+    <div />
   );
 }
 
