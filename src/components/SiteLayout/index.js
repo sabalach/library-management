@@ -104,13 +104,7 @@ function SiteLayout({ children, subTitle = '' }) {
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           <Text type="secondary">
-            Developed by
-            {' '}
-            <a href="https://sabal.com.np" target="_blank" rel="noreferrer">Sabal Acharya</a>
-            {' '}
-            © 2021 |
-            {' '}
-            <a href="mailto:info@sabal.com.np">info@sabal.com.np</a>
+            © 2021
           </Text>
         </Footer>
       </Layout>
