@@ -357,6 +357,7 @@ export const GET_CONFIG = gql`
       institutionContact
       studentLimit
       fineAfter
+      institutionAbb
     }
   }
 `;
@@ -367,7 +368,8 @@ export const SET_CONFIG = gql`
     $institutionLocation:String,
     $institutionContact:String,
     $studentLimit: Int,
-    $fineAfter: Int
+    $fineAfter: Int,
+    $institutionAbb: String
   ){
     setConfig(
       institutionName:$institutionName,
@@ -375,6 +377,7 @@ export const SET_CONFIG = gql`
       institutionContact:$institutionContact,
       studentLimit:$studentLimit,
       fineAfter:$fineAfter,
+      institutionAbb:$institutionAbb
     ){
       institutionName
       institutionLocation
@@ -438,6 +441,7 @@ export const GET_STATS = gql`
       totalBooks
       totalStudents
       borrowedBooks
+      z
     }
   }
 `;

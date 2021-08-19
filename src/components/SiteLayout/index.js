@@ -22,9 +22,11 @@ const { Text } = Typography;
 
 function SiteLayout({ children, subTitle = '' }) {
   const router = useRouter();
+  console.log({ router });
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider>
+
+      <Sider hidden={router.route === '/login'}>
         <div style={{
           padding: '10px',
           margin: 'auto auto',
@@ -83,6 +85,9 @@ function SiteLayout({ children, subTitle = '' }) {
         <PageHeader
           className="site-page-header"
           onBack={null}
+          style={{
+            textAlign: router.route === '/login' ? 'center' : 'left',
+          }}
           title={(
             <>
               <BankFilled style={{ fontSize: '30px', color: '#999999', marginRight: '20px' }} />
@@ -108,6 +113,7 @@ function SiteLayout({ children, subTitle = '' }) {
           </Text>
         </Footer>
       </Layout>
+
     </Layout>
   );
 }

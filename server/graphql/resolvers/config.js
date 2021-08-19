@@ -15,6 +15,7 @@ module.exports = {
       institutionContact,
       studentLimit,
       fineAfter,
+      institutionAbb,
     }) {
       if (institutionName) {
         const db = await lowDb;
@@ -36,12 +37,17 @@ module.exports = {
         const db = await lowDb;
         await db.set('fineAfter', fineAfter).write();
       }
+      if (institutionAbb) {
+        const db = await lowDb;
+        await db.set('institutionAbb', institutionAbb).write();
+      }
       return {
         institutionName,
         institutionLocation,
         institutionContact,
         studentLimit,
         fineAfter,
+        institutionAbb,
       };
     },
   },

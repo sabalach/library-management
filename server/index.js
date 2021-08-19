@@ -1,13 +1,15 @@
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer, UserInputError } = require('apollo-server-express');
 const {
   graphqlUploadExpress, // A Koa implementation is also exported.
 } = require('graphql-upload');
 const { readFileSync } = require('fs');
 const next = require('next');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const resolvers = require('./graphql/resolvers');
 const { startDB, models } = require('./db');
+const lowDb = require('./lowDb');
 
 (async () => {
   const dev = process.env.NODE_ENV !== 'production';
@@ -23,11 +25,29 @@ const { startDB, models } = require('./db');
     url: 'localhost:27017',
   });
 
-  const context = {
-    models,
-    db,
-  };
+  const context = async ({ req }) => {
+    const token = (req.headers.authorization || '').split(' ')[1];
 
+    // req.body.operationName
+    if (req.body.operationName === 'Login') {
+      return {
+        models,
+        db,
+      };
+    }
+
+    if (!token) {
+      throw new UserInputError('No authorization token');
+    }
+    const ldb = await lowDb;
+    const { username } = await jwt.verify(token, await ldb.get('TOKEN_KEY').value());
+
+    return {
+      models,
+      db,
+      username,
+    };
+  };
   const app = express();
   const server = new ApolloServer({
     typeDefs,

@@ -3,9 +3,12 @@ const FileAsync = require('lowdb/adapters/FileAsync');
 
 const adapter = new FileAsync('db.json', {
   defaultValue: {
-    institutionName: 'Abc School',
-    institutionLocation: 'Abc School',
-    institutionContact: '+977-01-01234567, info@abc.com',
+    institutionName: 'ABC Institute of Technology',
+    institutionLocation: 'Butwal,Rupandehi',
+    institutionContact: 'www.kaichogroup.com',
+    institutionAbb: 'abc',
+    studentLimit: 1,
+    fineAfter: 28,
   },
 });
 const lowDb = low(adapter);

@@ -62,12 +62,17 @@ type Config {
   institutionContact: String
   studentLimit: Int
   fineAfter: Int
+  institutionAbb: String
 }
 
 type Stats {
   totalBooks: Int
   totalStudents: Int
   borrowedBooks: Int
+  newBooks: Int
+  oldBooks: Int
+  damagedBooks: Int
+  lostBooks: Int
 }
 
 type Query {
@@ -148,6 +153,9 @@ type Mutation {
     institutionLocation: String,
     institutionContact: String,
     studentLimit: Int,
-    fineAfter: Int
+    fineAfter: Int,
+    institutionAbb: String
   ):Config
+
+  login(username:String!,password:String!):String!
 }

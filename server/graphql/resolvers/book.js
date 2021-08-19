@@ -28,7 +28,6 @@ module.exports = {
         author,
         isbn,
         condition,
-        serialNumber: (new Date()).getTime().toString(),
         deleted: false,
       });
       const res = await newBook.save();

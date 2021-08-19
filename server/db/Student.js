@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const AutoIncrement = require('./AutoIncrement');
 
 const StudentSchema = new mongoose.Schema({
   name: String,
@@ -25,6 +25,6 @@ const StudentSchema = new mongoose.Schema({
   deleted: Boolean,
 });
 
-StudentSchema.plugin(AutoIncrement, { inc_field: 'serialNumber', start_seq: 10000 });
+StudentSchema.plugin(AutoIncrement, { id: 'std_sn', inc_field: 'serialNumber', start_seq: 100 });
 
 module.exports = mongoose.model('Student', StudentSchema);

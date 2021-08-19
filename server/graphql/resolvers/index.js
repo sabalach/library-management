@@ -11,6 +11,7 @@ const DepartmentResolver = require('./department');
 const LogoResolver = require('./logo');
 const ConfigResolver = require('./config');
 const StatsResolver = require('./stats');
+const LoginResolver = require('./login');
 
 module.exports = {
   Upload: GraphQLUpload,
@@ -47,6 +48,7 @@ module.exports = {
     ...DepartmentResolver.Mutation,
     ...LogoResolver.Mutation,
     ...ConfigResolver.Mutation,
+    ...LoginResolver.Mutation,
   },
   Student: {
     ...StudentResolver.Student,

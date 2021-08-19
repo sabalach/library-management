@@ -2,6 +2,11 @@
   "institutionName": "ABC Institute of Technology",
   "institutionLocation": "Butwal,Rupandehi",
   "institutionContact": "www.kaichogroup.com",
+  "institutionAbb": "abcc",
   "studentLimit": 1,
-  "fineAfter": 28
+  "fineAfter": 28,
+  "TOKEN_KEY": "0ba9cdb082f229974bc2f46cf0476dae02ceaea9fdf1c42d1d868f32a0ab787f",
+  "admins": {
+    "admin": "admin@123"
+  } 
 }

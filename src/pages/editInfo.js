@@ -94,6 +94,14 @@ function EditInfo() {
           </Form.Item>
 
           <Form.Item
+            label="abbreviation"
+            name="institutionAbb"
+            rules={[{ required: true, message: 'Please input abbreviation!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
             label="Max No. of Books a student can borrow"
             name="studentLimit"
             rules={[{ required: true, message: 'Please input!' }]}

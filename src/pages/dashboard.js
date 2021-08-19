@@ -16,13 +16,25 @@ function Dashboard() {
     <Card>
       <Row gutter={16}>
         <Col span={12} style={{ paddingTop: '25px' }}>
-          <Statistic title="Total Students" value={get(stats, 'totalBooks', 0)} />
+          <Statistic title="Total Books" value={get(stats, 'totalBooks', 0)} />
         </Col>
         <Col span={12} style={{ paddingTop: '25px' }}>
-          <Statistic title="Total Books" value={get(stats, 'totalStudents', 0)} />
+          <Statistic title="Total Students" value={get(stats, 'totalStudents', 0)} />
         </Col>
         <Col span={12} style={{ paddingTop: '25px' }}>
           <Statistic title="Books Borrowed" value={get(stats, 'borrowedBooks', 0)} />
+        </Col>
+        <Col span={12} style={{ paddingTop: '25px' }}>
+          <Statistic title="New Books" value={get(stats, 'newBooks', 0)} />
+        </Col>
+        <Col span={12} style={{ paddingTop: '25px' }}>
+          <Statistic title="Old Books" value={get(stats, 'oldBooks', 0)} />
+        </Col>
+        <Col span={12} style={{ paddingTop: '25px' }}>
+          <Statistic title="Damaged Books" value={get(stats, 'damagedBooks', 0)} />
+        </Col>
+        <Col span={12} style={{ paddingTop: '25px' }}>
+          <Statistic title="Lost Books" value={get(stats, 'lostBooks', 0)} />
         </Col>
         {/* <Col span={12} style={{ paddingTop: '25px' }}>
           <Statistic

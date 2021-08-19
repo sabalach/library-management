@@ -7,6 +7,8 @@ import get from 'lodash/get';
 import { DownloadOutlined } from '@ant-design/icons';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
+import { useQuery } from '@apollo/client';
+import { GET_CONFIG } from '../../queries';
 
 const { Title } = Typography;
 
@@ -16,6 +18,9 @@ function BookBarcodeModal({
   autoDownload = false,
   showDownloadBtn = true,
 }) {
+  const {
+    data: { getConfig: config } = { getConfig: null },
+  } = useQuery(GET_CONFIG);
   const handleOk = () => {
     setCurrentBookBarcode(null);
   };
@@ -45,10 +50,10 @@ function BookBarcodeModal({
   };
 
   useEffect(() => {
-    if (autoDownload) {
+    if (autoDownload && config) {
       handleDownload();
     }
-  }, [autoDownload, currentBookBarcode]);
+  }, [autoDownload, currentBookBarcode, config]);
 
   return (
     <Modal
@@ -73,7 +78,7 @@ function BookBarcodeModal({
         style={{ textAlign: 'center', backgroundColor: '#fff' }}
       >
         <Title level={4} style={{ margin: 0, padding: 0, color: '#000' }}>{get(currentBookBarcode, 'name', '')}</Title>
-        <Barcode value={get(currentBookBarcode, 'serialNumber', '')} />
+        <Barcode value={`${get(config, 'institutionAbb', '')}${get(currentBookBarcode, 'serialNumber', '')}`} />
       </div>
     </Modal>
   );

@@ -5,17 +5,30 @@ import '../css/main.css';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 import { ApolloProvider } from '@apollo/client/react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NextNprogress from 'nextjs-progressbar';
 import createUploadLink from 'apollo-upload-client/public/createUploadLink';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import CurrentStudentContext from '../contexts/CurrentStudent';
-import SiteLayout from '../components/SiteLayout';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   link: createUploadLink(),
   cache: new InMemoryCache(),
 });
+
+const SiteLayout = dynamic(
+  () => import('../components/SiteLayout'),
+  {
+    loading: () => (
+      <div className="loader-bg">
+        <div className="loader-p" />
+      </div>
+    ),
+    ssr: false,
+  },
+);
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
@@ -25,6 +38,18 @@ export default function MyApp({ Component, pageProps }) {
     currentStudent.current = std;
   };
 
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login').then(() => {
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
   return (
     <ApolloProvider client={client}>
       <CurrentStudentContext.Provider value={{ currentStudent, setCurrentStudent }}>
@@ -34,9 +59,11 @@ export default function MyApp({ Component, pageProps }) {
           stopDelayMs={200}
           height="3"
         />
+        {!loading && (
         <SiteLayout>
           <Component {...pageProps} />
         </SiteLayout>
+        )}
       </CurrentStudentContext.Provider>
     </ApolloProvider>
   );
