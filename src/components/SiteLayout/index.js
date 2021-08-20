@@ -46,7 +46,8 @@ function SiteLayout({ children, subTitle = '' }) {
     <Layout style={{ minHeight: '100vh' }}>
 
       <Sider
-        theme={currentTheme}
+        // theme={currentTheme}
+        theme="dark"
         hidden={router.route === '/login'}
       >
         <div style={{
@@ -67,6 +68,7 @@ function SiteLayout({ children, subTitle = '' }) {
           onSelect={({ key }) => {
             router.push(`/${key}`);
           }}
+          theme={currentTheme === 'light' ? 'dark' : 'light'}
         >
           <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
             Dashboard
