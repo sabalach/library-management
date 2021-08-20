@@ -117,7 +117,7 @@ function IdCardModal({
           </table>
           <div className={styles.barcode}>
             <Barcode
-              value={`${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')}`}
+              value={get(currentIdCard, 'serialNumber', '')}
               // width={2.15}
               height={40}
               fontSize={12.8}

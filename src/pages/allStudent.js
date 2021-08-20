@@ -61,7 +61,6 @@ const columns = [
     title: 'Serial Number',
     dataIndex: 'serialNumber',
     key: 'serialNumber',
-    render: (serialNum, record) => `${record.level.abbreviation}${record.department.abbreviation}${serialNum}`,
     filterDropdown: ({
       setSelectedKeys, selectedKeys, confirm, clearFilters,
     }) => (
@@ -98,7 +97,7 @@ const columns = [
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) => (record.serialNumber
-      ? `${record.level.abbreviation}${record.department.abbreviation}${record.serialNumber}`.toLowerCase().includes(value.toLowerCase())
+      ? record.serialNumber.toLowerCase().includes(value.toLowerCase())
       : ''),
   },
   {

@@ -148,13 +148,6 @@ function EditStudent() {
             </Select>
           </Form.Item>
           <Form.Item
-            label="Roll No."
-            name="serialNumber"
-            rules={[{ required: true, message: 'Please input roll no' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
             label="Address"
             name="address"
             rules={[{ required: true, message: 'Please input address' }]}
@@ -173,14 +166,6 @@ function EditStudent() {
             label="Date of Birth"
             name="dob"
             rules={[{ required: true, message: 'Please input dob' }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Valid Upto"
-            name="validUpto"
-            rules={[{ required: true, message: 'Please input valid upto' }]}
           >
             <Input />
           </Form.Item>

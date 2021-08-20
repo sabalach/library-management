@@ -38,9 +38,12 @@ function AddStudent() {
   const router = useRouter();
 
   const onFinish = async (values) => {
+    const level = levels.find(lvl => lvl.id === values.levelId);
+    const department = departments.find(dpt => dpt.id === values.departmentId);
     await addStudent({
       variables: {
         ...values,
+        serialNumber: level.abbreviation + department.abbreviation + values.serialNumber,
       },
     });
     router.push('/allStudent');
@@ -144,7 +147,6 @@ function AddStudent() {
           <Form.Item
             label="Valid Upto"
             name="validUpto"
-            rules={[{ required: true, message: 'Please input dob' }]}
           >
             <Input />
           </Form.Item>

@@ -6,10 +6,9 @@ const lowDb = require('../../lowDb');
 
 module.exports = {
   Query: {
-    async getBookLogs(_, { studentSerialNumber: sn }) {
+    async getBookLogs(_, { studentSerialNumber }) {
       let args = {};
-      if (sn) {
-        const studentSerialNumber = sn.substr(sn.length - 5);
+      if (studentSerialNumber) {
         const student = await Student.findOne({ serialNumber: studentSerialNumber });
         if (!student) {
           throw new UserInputError('Student not found.');
@@ -37,13 +36,15 @@ module.exports = {
     },
   },
   Mutation: {
-    async borrowBook(_, { studentSerialNumber: sn, bookSerialNumber }) {
-      const studentSerialNumber = sn.substr(sn.length - 5);
-      const student = await Student.findOne({ serialNumber: studentSerialNumber });
+    async borrowBook(_, { studentSerialNumber, bookSerialNumber: bsn }) {
+      const db = await lowDb;
+      const institutionAbb = await db.get('institutionAbb').value();
+      const bookSerialNumber = bsn.replace(institutionAbb, '');
+      const student = await Student.findOne({ serialNumber: studentSerialNumber, deleted: false });
       if (!student) {
         throw new UserInputError('Student not found.');
       }
-      const book = await Book.findOne({ serialNumber: bookSerialNumber });
+      const book = await Book.findOne({ serialNumber: bookSerialNumber, deleted: false });
       if (!book) {
         throw new UserInputError('Book not found.');
       }
@@ -54,7 +55,6 @@ module.exports = {
       if (existingBookLog) {
         throw new UserInputError('Book already borrowed');
       }
-      const db = await lowDb;
       const noOfBooksBorrowed = await BookLog.count({
         studentId: student._id,
         returnedDate: null,
@@ -75,7 +75,10 @@ module.exports = {
         ...res._doc,
       };
     },
-    async returnBook(_, { bookSerialNumber }) {
+    async returnBook(_, { bookSerialNumber: bsn }) {
+      const db = await lowDb;
+      const institutionAbb = await db.get('institutionAbb').value();
+      const bookSerialNumber = bsn.replace(institutionAbb, '');
       const book = await Book.findOne({ serialNumber: bookSerialNumber });
       if (!book) {
         throw new UserInputError('Book not found.');
@@ -138,16 +141,15 @@ module.exports = {
         };
       }
     },
-    async quickBorrow(_, { studentSerialNumber: sn, bookSerialNumber: bsn }) {
+    async quickBorrow(_, { studentSerialNumber, bookSerialNumber: bsn }) {
       const db = await lowDb;
       const institutionAbb = await db.get('institutionAbb').value();
       const bookSerialNumber = bsn.replace(institutionAbb, '');
-      const studentSerialNumber = sn.substr(sn.length - 3);
-      const student = await Student.findOne({ serialNumber: studentSerialNumber });
+      const student = await Student.findOne({ serialNumber: studentSerialNumber, deleted: false });
       if (!student) {
         throw new UserInputError('Student not found.');
       }
-      const book = await Book.findOne({ serialNumber: bookSerialNumber });
+      const book = await Book.findOne({ serialNumber: bookSerialNumber, deleted: false });
       if (!book) {
         throw new UserInputError('Book not found.');
       }
