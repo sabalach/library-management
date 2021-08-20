@@ -138,7 +138,10 @@ module.exports = {
         };
       }
     },
-    async quickBorrow(_, { studentSerialNumber: sn, bookSerialNumber }) {
+    async quickBorrow(_, { studentSerialNumber: sn, bookSerialNumber: bsn }) {
+      const db = await lowDb;
+      const institutionAbb = await db.get('institutionAbb').value();
+      const bookSerialNumber = bsn.replace(institutionAbb, '');
       const studentSerialNumber = sn.substr(sn.length - 3);
       const student = await Student.findOne({ serialNumber: studentSerialNumber });
       if (!student) {
@@ -166,7 +169,6 @@ module.exports = {
           ...res._doc,
         };
       }
-      const db = await lowDb;
       const noOfBooksBorrowed = await BookLog.count({
         studentId: student._id,
         returnedDate: null,
