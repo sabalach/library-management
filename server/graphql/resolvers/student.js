@@ -23,7 +23,7 @@ module.exports = {
   },
   Mutation: {
     async addStudent(_, {
-      name, gender, levelId, departmentId, address, dob, photo, validUpto,
+      name, gender, levelId, departmentId, address, dob, photo, validUpto, serialNumber,
     }) {
       let photoId;
       if (photo) {
@@ -36,6 +36,7 @@ module.exports = {
         deleted: false,
         levelId,
         departmentId,
+        serialNumber,
         address,
         dob,
         photo: photoId,

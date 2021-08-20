@@ -42,6 +42,7 @@ function EditStudent() {
       name: student.name,
       levelId: student.level.id,
       departmentId: student.department.id,
+      serialNumber: student.serialNumber,
       gender: student.gender,
       photo: student.photo,
       address: student.address,
@@ -145,7 +146,13 @@ function EditStudent() {
               ))}
             </Select>
           </Form.Item>
-
+          <Form.Item
+            label="Roll No."
+            name="serialNumber"
+            rules={[{ required: true, message: 'Please input roll no' }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             label="Address"
             name="address"

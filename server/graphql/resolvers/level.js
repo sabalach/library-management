@@ -31,9 +31,7 @@ module.exports = {
       };
     },
     async deleteLevel(_, { id }) {
-      await Level.findByIdAndUpdate(id, {
-        deleted: true,
-      }, { new: true });
+      await Level.findByIdAndDelete(id);
       return true;
     },
   },

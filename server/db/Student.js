@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('./AutoIncrement');
 
 const StudentSchema = new mongoose.Schema({
   name: String,
@@ -15,6 +14,7 @@ const StudentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department',
   },
+  serialNumber: String,
   address: String,
   dob: String,
   photo: {
@@ -24,7 +24,5 @@ const StudentSchema = new mongoose.Schema({
   validUpto: String,
   deleted: Boolean,
 });
-
-StudentSchema.plugin(AutoIncrement, { id: 'std_sn', inc_field: 'serialNumber', start_seq: 100 });
 
 module.exports = mongoose.model('Student', StudentSchema);

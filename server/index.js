@@ -27,9 +27,8 @@ const lowDb = require('./lowDb');
 
   const context = async ({ req }) => {
     const token = (req.headers.authorization || '').split(' ')[1];
-
     // req.body.operationName
-    if (req.body.operationName === 'Login') {
+    if (req.body.operationName === 'Login' || req.body.operationName === 'IntrospectionQuery') {
       return {
         models,
         db,
@@ -41,7 +40,9 @@ const lowDb = require('./lowDb');
     }
     const ldb = await lowDb;
     const { username } = await jwt.verify(token, await ldb.get('TOKEN_KEY').value());
-
+    if (!username) {
+      throw new UserInputError('User not authorized');
+    }
     return {
       models,
       db,

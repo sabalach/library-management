@@ -67,6 +67,7 @@ export const ADD_STUDENT = gql`
     $gender:Gender!,
     $levelId: ID!,
     $departmentId: ID!,
+    $serialNumber:String,
     $address:String,
     $dob:String,
     $photo: Upload,
@@ -77,6 +78,7 @@ export const ADD_STUDENT = gql`
       gender:$gender,
       levelId:$levelId,
       departmentId:$departmentId,
+      serialNumber:$serialNumber,
       photo:$photo,
       address:$address,
       dob:$dob,
@@ -142,6 +144,7 @@ export const UPDATE_STUDENT = gql`
     $gender:Gender,
     $levelId: ID,
     $departmentId: ID,
+    $serialNumber:String,
     $address:String,
     $dob:String,
     $photo:Upload,
@@ -153,6 +156,7 @@ export const UPDATE_STUDENT = gql`
       gender:$gender
       levelId:$levelId,
       departmentId:$departmentId,
+      serialNumber:$serialNumber,
       address:$address,
       dob:$dob,
       photo: $photo,
@@ -317,6 +321,12 @@ export const ADD_LEVEL = gql`
   }
 `;
 
+export const DELETE_LEVEL = gql`
+  mutation DeleteLevel($id:ID!){
+    deleteLevel(id:$id)
+  }
+`;
+
 export const GET_DEPARTMENTS = gql`
   query GetDepartments{
     getDepartments{
@@ -340,6 +350,12 @@ export const ADD_DEPARTMENT = gql`
       name
       abbreviation
     }
+  }
+`;
+
+export const DELETE_DEPARTMENT = gql`
+  mutation DeleteDepartment($id:ID!){
+    deleteDepartment(id:$id)
   }
 `;
 
@@ -441,7 +457,6 @@ export const GET_STATS = gql`
       totalBooks
       totalStudents
       borrowedBooks
-      z
     }
   }
 `;

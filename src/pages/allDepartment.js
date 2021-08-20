@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
-import { Table } from 'antd';
+import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
+import { useMutation, useQuery } from '@apollo/client';
+import { Button, Table } from 'antd';
 import React from 'react';
-import { GET_DEPARTMENTS } from '../queries';
+import { DELETE_DEPARTMENT, GET_DEPARTMENTS } from '../queries';
 
 const columns = [
   {
@@ -13,6 +14,36 @@ const columns = [
     title: 'Abbreviation',
     dataIndex: 'abbreviation',
     key: 'abbreviation',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => {
+      const [deleteDpt, { loading }] = useMutation(DELETE_DEPARTMENT, {
+        update(cache) {
+          const existingDpt = cache.readQuery({ query: GET_DEPARTMENTS }).getDepartments;
+          const newDpt = existingDpt.filter(dpt => dpt.id !== record.id);
+          cache.writeQuery({
+            query: GET_DEPARTMENTS,
+            data: { getDepartments: newDpt },
+          });
+        },
+      });
+      return (
+        <Button
+          type="primary"
+          shape="circle"
+          icon={loading ? <LoadingOutlined /> : <DeleteOutlined />}
+          danger
+          onClick={async () => {
+            if (loading) return;
+            await deleteDpt({
+              variables: { id: record.id },
+            });
+          }}
+        />
+      );
+    },
   },
 ];
 

@@ -10,11 +10,38 @@ import NextNprogress from 'nextjs-progressbar';
 import createUploadLink from 'apollo-upload-client/public/createUploadLink';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { setContext } from '@apollo/client/link/context';
 import CurrentStudentContext from '../contexts/CurrentStudent';
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  if (typeof localStorage === 'undefined') {
+    return {
+      headers: {
+        ...headers,
+      },
+    };
+  }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return {
+      headers: {
+        ...headers,
+      },
+    };
+  }
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
-  link: createUploadLink(),
+  link: authLink.concat(createUploadLink()),
   cache: new InMemoryCache(),
 });
 

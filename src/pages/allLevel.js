@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
-import { Table } from 'antd';
+import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
+import { useMutation, useQuery } from '@apollo/client';
+import { Button, Table } from 'antd';
 import React from 'react';
-import { GET_LEVELS } from '../queries';
+import { DELETE_LEVEL, GET_LEVELS } from '../queries';
 
 const columns = [
   {
@@ -13,6 +14,36 @@ const columns = [
     title: 'Abbreviation',
     dataIndex: 'abbreviation',
     key: 'abbreviation',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => {
+      const [deleteLevel, { loading }] = useMutation(DELETE_LEVEL, {
+        update(cache) {
+          const existingLevels = cache.readQuery({ query: GET_LEVELS }).getLevels;
+          const newLevels = existingLevels.filter(lvl => lvl.id !== record.id);
+          cache.writeQuery({
+            query: GET_LEVELS,
+            data: { getLevels: newLevels },
+          });
+        },
+      });
+      return (
+        <Button
+          type="primary"
+          shape="circle"
+          icon={loading ? <LoadingOutlined /> : <DeleteOutlined />}
+          danger
+          onClick={async () => {
+            if (loading) return;
+            await deleteLevel({
+              variables: { id: record.id },
+            });
+          }}
+        />
+      );
+    },
   },
 ];
 

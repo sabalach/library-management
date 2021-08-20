@@ -113,6 +113,13 @@ function AddStudent() {
             </Select>
           </Form.Item>
           <Form.Item
+            label="Roll No."
+            name="serialNumber"
+            rules={[{ required: true, message: 'Please input roll no' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Address"
             name="address"
             rules={[{ required: true, message: 'Please input address' }]}
