@@ -1,11 +1,40 @@
 import {
-  Form, Input, Button, Checkbox, Card,
+  Form, Input, Button, Checkbox, Card, message,
 } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { LOGIN } from '../queries';
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const [login] = useMutation(LOGIN);
+  const router = useRouter();
+  const onFinish = async (values) => {
+    message.loading({
+      key: 'login',
+      content: 'Logging in',
+    });
+    const {
+      data: { login: token } = { login: null },
+    } = await login({
+      variables: {
+        username: values.username,
+        password: values.password,
+      },
+    });
+    if (!token) {
+      message.error({
+        key: 'login',
+        content: 'Login failed',
+      });
+      return;
+    }
+    localStorage.setItem('token', token);
+    message.success({
+      key: 'login',
+      content: 'Sucessfylly logged in',
+    });
+    router.push('/dashboard');
   };
 
   return (

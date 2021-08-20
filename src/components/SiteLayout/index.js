@@ -13,6 +13,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import LogoutBtn from '../LogoutBtn';
 
 const {
   Content, Footer, Sider,
@@ -85,9 +86,6 @@ function SiteLayout({ children, subTitle = '' }) {
         <PageHeader
           className="site-page-header"
           onBack={null}
-          style={{
-            textAlign: router.route === '/login' ? 'center' : 'left',
-          }}
           title={(
             <>
               <BankFilled style={{ fontSize: '30px', color: '#999999', marginRight: '20px' }} />
@@ -95,6 +93,9 @@ function SiteLayout({ children, subTitle = '' }) {
             </>
           )}
           subTitle={subTitle}
+          extra={[
+            <LogoutBtn />,
+          ]}
         />
         {/* <style jsx global>
           {`
