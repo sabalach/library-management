@@ -28,7 +28,10 @@ const lowDb = require('./lowDb');
   const context = async ({ req }) => {
     const token = (req.headers.authorization || '').split(' ')[1];
     // req.body.operationName
-    if (req.body.operationName === 'Login' || req.body.operationName === 'IntrospectionQuery') {
+    if (
+      req.body.operationName === 'Login'
+      || req.body.operationName === 'GetConfig'
+      || req.body.operationName === 'IntrospectionQuery') {
       return {
         models,
         db,

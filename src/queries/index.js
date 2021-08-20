@@ -32,6 +32,7 @@ export const GET_STUDENTS = gql`
       }
       photo
       address
+      contactNumber
       dob
       validUpto
     }
@@ -69,6 +70,7 @@ export const ADD_STUDENT = gql`
     $departmentId: ID!,
     $serialNumber:String,
     $address:String,
+    $contactNumber:String,
     $dob:String,
     $photo: Upload,
     $validUpto:String
@@ -81,6 +83,7 @@ export const ADD_STUDENT = gql`
       serialNumber:$serialNumber,
       photo:$photo,
       address:$address,
+      contactNumber:$contactNumber,
       dob:$dob,
       validUpto:$validUpto
     ){
@@ -100,6 +103,7 @@ export const ADD_STUDENT = gql`
       }
       photo
       address
+      contactNumber
       dob
       validUpto
     }
@@ -131,6 +135,7 @@ export const GET_STUDENT = gql`
       }
       photo
       address
+      contactNumber
       dob
       validUpto
     }
@@ -146,6 +151,7 @@ export const UPDATE_STUDENT = gql`
     $departmentId: ID,
     $serialNumber:String,
     $address:String,
+    $contactNumber:String,
     $dob:String,
     $photo:Upload,
     $validUpto:String
@@ -158,6 +164,7 @@ export const UPDATE_STUDENT = gql`
       departmentId:$departmentId,
       serialNumber:$serialNumber,
       address:$address,
+      contactNumber:$contactNumber,
       dob:$dob,
       photo: $photo,
       validUpto:$validUpto
@@ -178,6 +185,7 @@ export const UPDATE_STUDENT = gql`
       }
       photo
       address
+      contactNumber
       dob
       validUpto
     }

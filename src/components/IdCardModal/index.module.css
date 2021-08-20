@@ -43,9 +43,14 @@
   margin-left: 4.8mm;
   margin-right: 3.2mm;
   margin-bottom: 3.2mm;
+  vertical-align: top;
 }
 .info tr td:first-child {
   color: #B71C1C;
+  vertical-align: top;
+}
+.info tr td:last-child {
+  padding-left: 1.3mm;
 }
 .logo {
   height: 16mm;

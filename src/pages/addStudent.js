@@ -127,6 +127,13 @@ function AddStudent() {
             <Input />
           </Form.Item>
           <Form.Item
+            label="Contact Number"
+            name="contactNumber"
+            rules={[{ required: true, message: 'Please input contact number' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Date of Birth"
             name="dob"
             rules={[{ required: true, message: 'Please input dob' }]}

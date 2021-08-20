@@ -10,31 +10,38 @@ const Login = () => {
   const [login] = useMutation(LOGIN);
   const router = useRouter();
   const onFinish = async (values) => {
-    message.loading({
-      key: 'login',
-      content: 'Logging in',
-    });
-    const {
-      data: { login: token } = { login: null },
-    } = await login({
-      variables: {
-        username: values.username,
-        password: values.password,
-      },
-    });
-    if (!token) {
+    try {
+      message.loading({
+        key: 'login',
+        content: 'Logging in',
+      });
+      const {
+        data: { login: token } = { login: null },
+      } = await login({
+        variables: {
+          username: values.username,
+          password: values.password,
+        },
+      });
+      if (!token) {
+        message.error({
+          key: 'login',
+          content: 'Login failed',
+        });
+        return;
+      }
+      localStorage.setItem('token', token);
+      message.success({
+        key: 'login',
+        content: 'Sucessfylly logged in',
+      });
+      router.push('/dashboard');
+    } catch (error) {
       message.error({
         key: 'login',
         content: 'Login failed',
       });
-      return;
     }
-    localStorage.setItem('token', token);
-    message.success({
-      key: 'login',
-      content: 'Sucessfylly logged in',
-    });
-    router.push('/dashboard');
   };
 
   return (

@@ -17,6 +17,7 @@ const StudentSchema = new mongoose.Schema({
   serialNumber: String,
   address: String,
   dob: String,
+  contactNumber: String,
   photo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'fs.files',

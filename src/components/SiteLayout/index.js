@@ -1,10 +1,10 @@
 import {
   Layout, Menu, Avatar, PageHeader,
   Typography,
+  Space,
 } from 'antd';
 import {
   AppstoreOutlined,
-  BankFilled,
   BookFilled,
   ContactsFilled,
   DatabaseFilled,
@@ -14,8 +14,11 @@ import {
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useThemeSwitcher } from 'react-css-theme-switcher';
+import { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import LogoutBtn from '../LogoutBtn';
 import ThemeSwitchBtn from '../ThemeSwitchBtn';
+import { GET_CONFIG } from '../../queries';
 
 const {
   Content, Footer, Sider,
@@ -25,7 +28,20 @@ const { Text } = Typography;
 
 function SiteLayout({ children, subTitle = '' }) {
   const router = useRouter();
-  const { currentTheme } = useThemeSwitcher();
+  const { switcher, themes, currentTheme } = useThemeSwitcher();
+  useEffect(() => {
+    const prevTheme = localStorage.getItem('theme');
+    if (prevTheme === 'light') {
+      switcher({
+        theme: themes.light,
+      });
+    }
+  }, []);
+
+  const {
+    data: { getConfig: config } = { getConfig: null },
+  } = useQuery(GET_CONFIG);
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
 
@@ -92,10 +108,27 @@ function SiteLayout({ children, subTitle = '' }) {
           className="site-page-header"
           onBack={null}
           title={(
-            <>
-              <BankFilled style={{ fontSize: '30px', color: '#999999', marginRight: '20px' }} />
-              Library Management System
-            </>
+            <Space size={0}>
+              <Avatar
+                // style={{ backgroundColor: '' }}
+                src="/logo.png"
+                size={45}
+              />
+              <div style={{ lineHeight: '22px' }}>
+                {config && config.institutionName}
+                <Text
+                  style={{
+                    display: 'block',
+                    fontSize: '15px',
+                    fontWeight: 'normal',
+                  }}
+                  type="secondary"
+                >
+                  Library Management System
+                </Text>
+              </div>
+
+            </Space>
           )}
           subTitle={subTitle}
           extra={[

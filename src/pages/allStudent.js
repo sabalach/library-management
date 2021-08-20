@@ -124,6 +124,11 @@ const columns = [
     key: 'address',
   },
   {
+    title: 'Contact',
+    dataIndex: 'contactNumber',
+    key: 'contactNumber',
+  },
+  {
     title: 'DOB',
     dataIndex: 'dob',
     key: 'dob',

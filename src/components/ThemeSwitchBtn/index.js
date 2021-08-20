@@ -5,9 +5,9 @@ import { useThemeSwitcher } from 'react-css-theme-switcher';
 
 function ThemeSwitchBtn() {
   const {
-    switcher, themes, currentTheme,
+    switcher, themes, currentTheme, status,
   } = useThemeSwitcher();
-
+  console.log({ currentTheme });
   return (
     <Switch
       checkedChildren={<BulbFilled />}
@@ -16,8 +16,10 @@ function ThemeSwitchBtn() {
         switcher({
           theme: checked ? themes.light : themes.dark,
         });
+        localStorage.setItem('theme', checked ? 'light' : 'dark');
       }}
-      defaultChecked={currentTheme === 'light'}
+      checked={currentTheme === 'light'}
+      loading={status === 'loading'}
     />
   );
 }

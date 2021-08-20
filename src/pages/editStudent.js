@@ -46,6 +46,7 @@ function EditStudent() {
       gender: student.gender,
       photo: student.photo,
       address: student.address,
+      contactNumber: student.contactNumber,
       dob: student.dob,
       validUpto: student.validUpto,
     });
@@ -157,6 +158,13 @@ function EditStudent() {
             label="Address"
             name="address"
             rules={[{ required: true, message: 'Please input address' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Contact Number"
+            name="contactNumber"
+            rules={[{ required: true, message: 'Please input contact number' }]}
           >
             <Input />
           </Form.Item>

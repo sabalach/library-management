@@ -43,6 +43,7 @@ type Student {
   department: Department!
   photo: ID
   address: String
+  contactNumber: String
   dob: String
   validUpto: String
 }
@@ -127,6 +128,7 @@ type Mutation {
     departmentId: ID!,
     serialNumber: String,
     address: String,
+    contactNumber: String,
     dob: String,
     photo: Upload,
     validUpto: String
@@ -139,6 +141,7 @@ type Mutation {
     departmentId: ID,
     serialNumber: String,
     address: String,
+    contactNumber: String,
     dob: String,
     photo: Upload,
     validUpto: String
