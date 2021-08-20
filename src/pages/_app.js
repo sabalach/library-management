@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import 'antd/dist/antd.dark.css'; // or 'antd/dist/antd.less'
+// import 'antd/dist/antd.css';
 import '../css/main.css';
-
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 import { ApolloProvider } from '@apollo/client/react';
@@ -11,6 +10,7 @@ import createUploadLink from 'apollo-upload-client/public/createUploadLink';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { setContext } from '@apollo/client/link/context';
+import { ThemeSwitcherProvider } from 'react-css-theme-switcher';
 import CurrentStudentContext from '../contexts/CurrentStudent';
 
 const authLink = setContext((_, { headers }) => {
@@ -57,6 +57,11 @@ const SiteLayout = dynamic(
   },
 );
 
+const themes = {
+  light: 'antd/antd.css',
+  dark: 'antd/antd.dark.css',
+};
+
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
   const currentStudent = useRef(null);
@@ -78,20 +83,22 @@ export default function MyApp({ Component, pageProps }) {
     }
   }, []);
   return (
-    <ApolloProvider client={client}>
-      <CurrentStudentContext.Provider value={{ currentStudent, setCurrentStudent }}>
-        <NextNprogress
-          color="#29D"
-          startPosition={0.3}
-          stopDelayMs={200}
-          height="3"
-        />
-        {!loading && (
-        <SiteLayout>
-          <Component {...pageProps} />
-        </SiteLayout>
-        )}
-      </CurrentStudentContext.Provider>
-    </ApolloProvider>
+    <ThemeSwitcherProvider defaultTheme="dark" themeMap={themes}>
+      <ApolloProvider client={client}>
+        <CurrentStudentContext.Provider value={{ currentStudent, setCurrentStudent }}>
+          <NextNprogress
+            color="#29D"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height="3"
+          />
+          {!loading && (
+          <SiteLayout>
+            <Component {...pageProps} />
+          </SiteLayout>
+          )}
+        </CurrentStudentContext.Provider>
+      </ApolloProvider>
+    </ThemeSwitcherProvider>
   );
 }

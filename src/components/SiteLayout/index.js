@@ -13,7 +13,9 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { useThemeSwitcher } from 'react-css-theme-switcher';
 import LogoutBtn from '../LogoutBtn';
+import ThemeSwitchBtn from '../ThemeSwitchBtn';
 
 const {
   Content, Footer, Sider,
@@ -23,11 +25,14 @@ const { Text } = Typography;
 
 function SiteLayout({ children, subTitle = '' }) {
   const router = useRouter();
-  console.log({ router });
+  const { currentTheme } = useThemeSwitcher();
   return (
     <Layout style={{ minHeight: '100vh' }}>
 
-      <Sider hidden={router.route === '/login'}>
+      <Sider
+        theme={currentTheme}
+        hidden={router.route === '/login'}
+      >
         <div style={{
           padding: '10px',
           margin: 'auto auto',
@@ -94,6 +99,7 @@ function SiteLayout({ children, subTitle = '' }) {
           )}
           subTitle={subTitle}
           extra={[
+            <ThemeSwitchBtn />,
             <LogoutBtn />,
           ]}
         />
