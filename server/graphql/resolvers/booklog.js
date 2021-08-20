@@ -139,7 +139,7 @@ module.exports = {
       }
     },
     async quickBorrow(_, { studentSerialNumber: sn, bookSerialNumber }) {
-      const studentSerialNumber = sn.substr(sn.length - 5);
+      const studentSerialNumber = sn.substr(sn.length - 3);
       const student = await Student.findOne({ serialNumber: studentSerialNumber });
       if (!student) {
         throw new UserInputError('Student not found.');
