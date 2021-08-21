@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { toJpeg } from 'html-to-image';
 import download from 'downloadjs';
 import { DownloadOutlined } from '@ant-design/icons';
+import { Textfit } from 'react-textfit';
 import styles from './index.module.css';
 import { GET_CONFIG } from '../../queries';
 
@@ -136,11 +137,15 @@ function IdCardModal({
               </div>
               <div>
                 <p className={styles.footertext}>
-                  {get(config, 'institutionName', '')}
-                  <br />
-                  {get(config, 'institutionLocation', '')}
-                  <br />
-                  {get(config, 'institutionContact', '')}
+                  <Textfit style={{ height: '9mm' }} mode="multi">
+                    {get(config, 'institutionName', '')}
+                  </Textfit>
+                  <Textfit max={12} mode="single">
+                    {get(config, 'institutionContact', '')}
+                  </Textfit>
+                  <Textfit max={12} mode="single">
+                    {get(config, 'institutionLocation', '')}
+                  </Textfit>
                 </p>
               </div>
             </div>
