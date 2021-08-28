@@ -79,6 +79,7 @@ function SiteLayout({ children, subTitle = '' }) {
           <SubMenu key="student" icon={<ContactsFilled />} title="Student">
             <Menu.Item key="allStudent">All</Menu.Item>
             <Menu.Item key="addStudent">Add</Menu.Item>
+            <Menu.Item key="deleteStudents">Delete</Menu.Item>
             <Menu.Item key="editStudent" disabled>Edit</Menu.Item>
           </SubMenu>
           <SubMenu key="book" icon={<BookFilled />} title="Book">

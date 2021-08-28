@@ -465,6 +465,10 @@ export const GET_STATS = gql`
       totalBooks
       totalStudents
       borrowedBooks
+      newBooks
+      oldBooks
+      damagedBooks
+      lostBooks
     }
   }
 `;
@@ -472,6 +476,12 @@ export const GET_STATS = gql`
 export const LOGIN = gql`
   mutation Login($username:String!,$password:String!){
     login(username:$username,password:$password)
+  }
+`;
+
+export const DELETE_STUDENTS = gql`
+  mutation DeleteStudents($departmentId:ID,$levelId:ID){
+    deleteStudents(departmentId:$departmentId,levelId:$levelId)
   }
 `;
 

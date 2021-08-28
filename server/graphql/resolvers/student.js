@@ -1,3 +1,5 @@
+const isEmpty = require('lodash/isEmpty');
+const { UserInputError } = require('apollo-server-express');
 const Student = require('../../db/Student');
 const Level = require('../../db/Level');
 const Department = require('../../db/Department');
@@ -71,6 +73,16 @@ module.exports = {
       await Student.findByIdAndUpdate(id, {
         deleted: true,
       }, { new: true });
+      return true;
+    },
+    async deleteStudents(_, args) {
+      const filter = cleanObj(args);
+      if (isEmpty(filter)) {
+        throw new UserInputError('No arguments provided');
+      }
+      await Student.updateMany({ ...filter }, {
+        deleted: true,
+      });
       return true;
     },
   },

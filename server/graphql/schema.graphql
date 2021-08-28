@@ -147,6 +147,7 @@ type Mutation {
     validUpto: String
   ): Student!
   deleteStudent(id: ID!): Boolean!
+  deleteStudents(departmentId: ID, levelId: ID): Boolean!
 
   quickBorrow(studentSerialNumber: String!, bookSerialNumber: String!): BookLog!
   borrowBook(studentSerialNumber: String!, bookSerialNumber: String!): BookLog!

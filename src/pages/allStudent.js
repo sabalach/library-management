@@ -228,7 +228,9 @@ const columns = [
                     <div>
                       {`${record.name}`}
                       <br />
-                      {`Grade ${record.grade}`}
+                      {`${record.department.name}`}
+                      <br />
+                      {`${record.level.name}`}
                       <br />
                     </div>
                   </Card>
