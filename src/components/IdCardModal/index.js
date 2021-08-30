@@ -94,10 +94,10 @@ function IdCardModal({
                 <td>Name:</td>
                 <td>{get(currentIdCard, 'name', '')}</td>
               </tr>
-              <tr>
+              {/* <tr>
                 <td>Gender:</td>
                 <td>{get(currentIdCard, 'gender', '')}</td>
-              </tr>
+              </tr> */}
               <tr>
                 <td>Department:</td>
                 <td>{get(currentIdCard, 'department.name', '')}</td>

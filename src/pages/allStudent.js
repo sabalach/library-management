@@ -1,18 +1,24 @@
 import {
   CheckOutlined,
   CloseCircleFilled,
-  DeleteOutlined, EditOutlined, EyeOutlined, LoadingOutlined, SearchOutlined,
+  DeleteOutlined, DownloadOutlined, EditOutlined, EyeOutlined, LoadingOutlined, SearchOutlined,
 } from '@ant-design/icons';
 import { useMutation, useQuery } from '@apollo/client';
 import {
-  Button, Card, Input, message, Space, Table,
+  Button, Card, Input, message, Space, Select,
 } from 'antd';
 import { useRouter } from 'next/router';
-import React, { useContext, useMemo, useState } from 'react';
+import React, {
+  useContext, useEffect, useMemo, useState,
+} from 'react';
+import { Table } from 'ant-table-extensions';
 import IdCardModal from '../components/IdCardModal';
 import CurrentStudentContext from '../contexts/CurrentStudent';
-import { DELETE_STUDENT, GET_STUDENTS } from '../queries';
+import {
+  DELETE_STUDENT, GET_DEPARTMENTS, GET_LEVELS, GET_STUDENTS,
+} from '../queries';
 
+const { Option } = Select;
 const columns = [
   {
     title: 'Name',
@@ -249,11 +255,40 @@ const columns = [
   },
 ];
 
+const exportFields = {
+  name: 'Name',
+  serialNumber: 'Serial Number',
+  gender: 'Gender',
+  level: {
+    header: 'Level',
+    formatter: (_fieldValue) => _fieldValue.name,
+  },
+  department: {
+    header: 'Department',
+    formatter: (_fieldValue) => _fieldValue.name,
+  },
+  contactNumber: 'Contact',
+  dob: 'Dob',
+};
+
 function AllStudent() {
   const [currentIdCard, setCurrentIdCard] = useState(null);
+  const [currentLevelId, setCurrentLevelId] = useState();
+  const [currentDepartmentId, setCurrentDepartmentId] = useState();
   const {
     data: { getStudents: students } = { getStudents: [] },
+    loading,
+    refetch,
   } = useQuery(GET_STUDENTS);
+
+  useEffect(() => {
+    refetch({
+      // ...(currentLevelId ? { levelId: currentLevelId } : {}),
+      // ...(currentDepartmentId ? { departmentId: currentDepartmentId } : {}),
+      levelId: currentLevelId,
+      departmentId: currentDepartmentId,
+    });
+  }, [currentLevelId, currentDepartmentId]);
 
   const data = useMemo(() => students.map(std => ({
     ...std,
@@ -262,14 +297,63 @@ function AllStudent() {
     },
   })), [students]);
 
+  const {
+    data: { getLevels: levels } = { getLevels: [] },
+  } = useQuery(GET_LEVELS);
+
+  const {
+    data: { getDepartments: departments } = { getDepartments: [] },
+  } = useQuery(GET_DEPARTMENTS);
+
   return (
     <>
+      <Select
+        showSearch
+        style={{ width: 200, marginRight: '20px' }}
+        placeholder="Filter by level"
+        optionFilterProp="children"
+        onChange={(v) => { setCurrentLevelId(v); }}
+        onClear={() => setCurrentLevelId(null)}
+        allowClear
+        filterOption={
+          (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {levels.map(level => <Option key={level.id} value={level.id}>{level.name}</Option>)}
+      </Select>
+      <Select
+        showSearch
+        style={{ width: 200 }}
+        placeholder="Filter by department"
+        optionFilterProp="children"
+        onChange={(v) => { setCurrentDepartmentId(v); }}
+        onClear={() => setCurrentDepartmentId(null)}
+        allowClear
+        filterOption={
+          (input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {departments.map(dpt => <Option key={dpt.id} value={dpt.id}>{dpt.name}</Option>)}
+      </Select>
+      <br />
       <br />
       <Table
+        loading={loading}
         dataSource={data}
         columns={columns}
         size="middle"
         pagination={{ defaultPageSize: 8 }}
+        exportable
+        exportableProps={{
+          children: 'Export Data',
+          btnProps: {
+            type: 'primary',
+            icon: <DownloadOutlined />,
+            children: <span>Export to CSV</span>,
+          },
+          fields: exportFields,
+          fileName: 'students',
+        }}
       />
       <IdCardModal currentIdCard={currentIdCard} setCurrentIdCard={setCurrentIdCard} />
     </>

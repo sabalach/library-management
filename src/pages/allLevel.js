@@ -16,6 +16,11 @@ const columns = [
     key: 'abbreviation',
   },
   {
+    title: 'Valid Upto',
+    dataIndex: 'validUpto',
+    key: 'validUpto',
+  },
+  {
     title: 'Action',
     key: 'action',
     render: (_, record) => {

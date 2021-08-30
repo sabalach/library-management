@@ -11,6 +11,7 @@ type Level {
   id: ID!
   name: String!
   abbreviation: String!
+  validUpto: String
 }
 
 enum BookCondition {
@@ -82,7 +83,7 @@ type Query {
   getBooks(condition: BookCondition): [Book]
   getBook(id: ID!): Book!
 
-  getStudents: [Student]
+  getStudents(levelId: ID, departmentId: ID): [Student]
   getStudent(id: ID!): Student!
 
   getBookLogs(studentSerialNumber: String): [BookLog]
@@ -97,8 +98,8 @@ type Query {
 }
 
 type Mutation {
-  addLevel(name: String!, abbreviation: String!): Level!
-  updateLevel(id: ID!, name: String, abbreviation: String): Level!
+  addLevel(name: String!, abbreviation: String!, validUpto: String): Level!
+  updateLevel(id: ID!, name: String, abbreviation: String, validUpto: String): Level!
   deleteLevel(id: ID!): Boolean!
   
   addDepartment(name: String!, abbreviation: String!): Level!

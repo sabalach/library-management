@@ -34,6 +34,7 @@ function AddStudent() {
   const {
     data: { getDepartments: departments } = { departments: [] },
   } = useQuery(GET_DEPARTMENTS);
+  const [form] = Form.useForm();
 
   const router = useRouter();
 
@@ -63,6 +64,7 @@ function AddStudent() {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          form={form}
           autoComplete="off"
         >
           <Form.Item
@@ -97,7 +99,16 @@ function AddStudent() {
             name="levelId"
             rules={[{ required: false, message: 'Please input level' }]}
           >
-            <Select style={{ width: 120 }}>
+            <Select
+              onChange={(v) => {
+                const level = levels.find(lvl => lvl.id === v);
+                form.setFieldsValue({
+                  validUpto: level.validUpto || '',
+                });
+                console.log({ level });
+              }}
+              style={{ width: 120 }}
+            >
               {(levels || []).map(
                 level => <Option key={level.id} value={level.id}>{level.name}</Option>,
               )}
@@ -109,7 +120,9 @@ function AddStudent() {
             name="departmentId"
             rules={[{ required: true, message: 'Please input department' }]}
           >
-            <Select style={{ width: 120 }}>
+            <Select
+              style={{ width: 120 }}
+            >
               {(departments || []).map(department => (
                 <Option key={department.id} value={department.id}>{department.name}</Option>
               ))}

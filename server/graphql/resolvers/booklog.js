@@ -59,7 +59,7 @@ module.exports = {
         studentId: student._id,
         returnedDate: null,
       });
-      if (noOfBooksBorrowed > await db.get('studentLimit').value()) {
+      if (noOfBooksBorrowed >= await db.get('studentLimit').value()) {
         throw new UserInputError('The student cannot borrow more books');
       }
       const newBookLog = new BookLog({
@@ -175,7 +175,7 @@ module.exports = {
         studentId: student._id,
         returnedDate: null,
       });
-      if (noOfBooksBorrowed > await db.get('studentLimit').value()) {
+      if (noOfBooksBorrowed >= await db.get('studentLimit').value()) {
         throw new UserInputError('The student cannot borrow more books');
       }
       const timeDiff = new Date().getTime() - new Date(existingBookLog.borrowedDate).getTime();

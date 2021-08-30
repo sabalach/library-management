@@ -10,10 +10,11 @@ module.exports = {
     },
   },
   Mutation: {
-    async addLevel(_, { name, abbreviation }) {
+    async addLevel(_, { name, abbreviation, validUpto }) {
       const newLevel = new Level({
         name,
         abbreviation,
+        validUpto,
       });
       const res = await newLevel.save();
       return {

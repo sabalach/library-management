@@ -16,8 +16,11 @@ module.exports = {
     },
   },
   Query: {
-    async getStudents() {
-      return Student.find({ deleted: false });
+    async getStudents(_, args) {
+      return Student.find({
+        ...cleanObj(args),
+        deleted: false,
+      });
     },
     async getStudent(_, { id }) {
       return Student.findById(id);

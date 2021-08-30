@@ -60,6 +60,13 @@ function AddLevel() {
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            label="Valid Upto"
+            name="validUpto"
+            rules={[{ required: true, message: 'Please input valid upto!' }]}
+          >
+            <Input />
+          </Form.Item>
 
           <Form.Item {...tailLayout}>
             <Button shape="round" icon={<PlusOutlined />} type="primary" htmlType="submit">

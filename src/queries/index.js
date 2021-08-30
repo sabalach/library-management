@@ -14,8 +14,8 @@ export const GET_BOOKS = gql`
 `;
 
 export const GET_STUDENTS = gql`
-  query GetStudents{
-    getStudents{
+  query GetStudents($levelId:ID,$departmentId:ID){
+    getStudents(levelId:$levelId,departmentId:$departmentId){
       id
       name
       serialNumber
@@ -309,6 +309,7 @@ export const GET_LEVELS = gql`
       id
       name
       abbreviation
+      validUpto
     }
   }
 `;
@@ -316,15 +317,18 @@ export const GET_LEVELS = gql`
 export const ADD_LEVEL = gql`
   mutation AddLevel(
     $name: String!,
-    $abbreviation: String!
+    $abbreviation: String!,
+    $validUpto: String
   ){
     addLevel(
       name:$name,
-      abbreviation:$abbreviation
+      abbreviation:$abbreviation,
+      validUpto:$validUpto
     ){
       id
       name
       abbreviation
+      validUpto
     }
   }
 `;

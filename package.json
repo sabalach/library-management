@@ -8,6 +8,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "@apollo/client": "^3.3.15",
+    "ant-table-extensions": "^1.1.7",
     "antd": "^4.12.3",
     "apollo-server-express": "^2.19.2",
     "apollo-upload-client": "^16.0.0",
