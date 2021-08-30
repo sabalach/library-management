@@ -158,6 +158,13 @@ module.exports = {
         returnedDate: null,
       });
       if (!existingBookLog) {
+        const noOfBooksBorrowed = await BookLog.count({
+          studentId: student._id,
+          returnedDate: null,
+        });
+        if (noOfBooksBorrowed >= await db.get('studentLimit').value()) {
+          throw new UserInputError('The student cannot borrow more books');
+        }
         const newBookLog = new BookLog({
           studentId: student._id,
           bookId: book._id,
@@ -170,13 +177,6 @@ module.exports = {
           id: res._id,
           ...res._doc,
         };
-      }
-      const noOfBooksBorrowed = await BookLog.count({
-        studentId: student._id,
-        returnedDate: null,
-      });
-      if (noOfBooksBorrowed >= await db.get('studentLimit').value()) {
-        throw new UserInputError('The student cannot borrow more books');
       }
       const timeDiff = new Date().getTime() - new Date(existingBookLog.borrowedDate).getTime();
       const daysDiff = timeDiff / (1000 * 3600 * 24);

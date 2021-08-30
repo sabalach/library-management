@@ -110,6 +110,9 @@ function QuickBorrow() {
                 // refetch({
                 //   studentSerialNumber: form.getFieldValue('studentSerialNumber'),
                 // });
+                if (!form.getFieldValue('studentSerialNumber')) {
+                  return;
+                }
                 loadBookLogs({
                   variables: {
                     studentSerialNumber: form.getFieldValue('studentSerialNumber'),
