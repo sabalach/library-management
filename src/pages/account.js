@@ -137,7 +137,7 @@ const columns = [
               content: 'Updated Fee Stats',
             });
           }}
-          value={String(record.feePaidUpto)}
+          value={record.feePaidUpto ? String(record.feePaidUpto) : undefined}
           loading={loading}
         >
           <Option value="0">Unpaid</Option>
