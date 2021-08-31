@@ -3,6 +3,8 @@ const Grid = require('gridfs-stream');
 const Book = require('./Book');
 const Student = require('./Student');
 const BookLog = require('./BookLog');
+const Department = require('./Department');
+const Level = require('./Level');
 
 mongoose.Promise = global.Promise;
 
@@ -22,6 +24,8 @@ const models = {
   Book,
   Student,
   BookLog,
+  Department,
+  Level,
 };
 
 module.exports = {

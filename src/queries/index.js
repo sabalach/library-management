@@ -34,6 +34,7 @@ export const GET_STUDENTS = gql`
       address
       contactNumber
       dob
+      feePaidUpto
       validUpto
     }
   }
@@ -105,6 +106,7 @@ export const ADD_STUDENT = gql`
       address
       contactNumber
       dob
+      feePaidUpto
       validUpto
     }
   }
@@ -137,6 +139,7 @@ export const GET_STUDENT = gql`
       address
       contactNumber
       dob
+      feePaidUpto
       validUpto
     }
   }
@@ -154,6 +157,7 @@ export const UPDATE_STUDENT = gql`
     $contactNumber:String,
     $dob:String,
     $photo:Upload,
+    $feePaidUpto:Int,
     $validUpto:String
   ){
     updateStudent(
@@ -167,6 +171,7 @@ export const UPDATE_STUDENT = gql`
       contactNumber:$contactNumber,
       dob:$dob,
       photo: $photo,
+      feePaidUpto:$feePaidUpto,
       validUpto:$validUpto
     ){
       id
@@ -187,6 +192,7 @@ export const UPDATE_STUDENT = gql`
       address
       contactNumber
       dob
+      feePaidUpto
       validUpto
     }
   }

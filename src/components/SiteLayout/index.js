@@ -4,6 +4,7 @@ import {
   Space,
 } from 'antd';
 import {
+  AccountBookOutlined,
   AppstoreOutlined,
   BookFilled,
   ContactsFilled,
@@ -82,6 +83,9 @@ function SiteLayout({ children, subTitle = '' }) {
             <Menu.Item key="deleteStudents">Delete</Menu.Item>
             <Menu.Item key="editStudent" disabled>Edit</Menu.Item>
           </SubMenu>
+          <Menu.Item key="account" icon={<AccountBookOutlined />}>
+            Account
+          </Menu.Item>
           <SubMenu key="book" icon={<BookFilled />} title="Book">
             <Menu.Item key="allBook">All</Menu.Item>
             <Menu.Item key="newBook">New</Menu.Item>

@@ -47,6 +47,7 @@ type Student {
   contactNumber: String
   dob: String
   validUpto: String
+  feePaidUpto: Int
 }
 
 type BookLog {
@@ -145,7 +146,8 @@ type Mutation {
     contactNumber: String,
     dob: String,
     photo: Upload,
-    validUpto: String
+    validUpto: String,
+    feePaidUpto: Int
   ): Student!
   deleteStudent(id: ID!): Boolean!
   deleteStudents(departmentId: ID, levelId: ID): Boolean!

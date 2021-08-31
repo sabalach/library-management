@@ -23,6 +23,7 @@ const StudentSchema = new mongoose.Schema({
     ref: 'fs.files',
   },
   validUpto: String,
+  feePaidUpto: Number,
   deleted: Boolean,
 });
 
