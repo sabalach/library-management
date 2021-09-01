@@ -36,6 +36,9 @@ function Dashboard() {
         <Col span={12} style={{ paddingTop: '25px' }}>
           <Statistic title="Lost Books" value={get(stats, 'lostBooks', 0)} />
         </Col>
+        <Col span={12} style={{ paddingTop: '25px' }}>
+          <Statistic title="Available Books" value={get(stats, 'totalBooks', 0) - get(stats, 'borrowedBooks', 0) - get(stats, 'damagedBooks', 0) - get(stats, 'lostBooks', 0)} />
+        </Col>
         {/* <Col span={12} style={{ paddingTop: '25px' }}>
           <Statistic
             title="Active"

@@ -1,23 +1,24 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Form, Input, Button, Card, message, Table,
-  Checkbox,
+  Checkbox, Image, Statistic, Space,
 } from 'antd';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { PlusOutlined } from '@ant-design/icons';
 import get from 'lodash/get';
 import {
-  BORROW_BOOK, GET_BOOK_LOGS, QUICK_BORROW, RETURN_BOOK,
+  BORROW_BOOK, GET_BOOK_LOGS, GET_STUDENT, QUICK_BORROW, RETURN_BOOK,
 } from '../queries';
 import { columns } from './allBooklog';
+import { appendSuffix } from '../utils';
 
 const layout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 6 },
+  labelCol: { span: 8 },
+  wrapperCol: { span: 12 },
 };
 const tailLayout = {
-  wrapperCol: { offset: 5, span: 16 },
+  wrapperCol: { offset: 8, span: 16 },
 };
 
 function QuickBorrow() {
@@ -26,10 +27,14 @@ function QuickBorrow() {
   const [returnBook] = useMutation(RETURN_BOOK);
   const [form] = Form.useForm();
   const [loadBookLogs, {
-    loading,
+    // loading,
     refetch,
     data: { getBookLogs: bookLogs } = { getBookLogs: null },
   }] = useLazyQuery(GET_BOOK_LOGS, { fetchPolicy: 'network-only' });
+
+  const [loadStudent, {
+    data: { getStudent: student } = { getStudent: null },
+  }] = useLazyQuery(GET_STUDENT);
 
   const onFinish = async (values) => {
     try {
@@ -86,60 +91,105 @@ function QuickBorrow() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  console.log({ bookLogs, loading });
+
+  const feeVal = useMemo(() => {
+    const sem = get(student, 'feePaidUpto', 'unset');
+    if (sem === 'unset') {
+      return 'Fee Not Updated';
+    }
+    if (sem === 0) {
+      return 'Not paid';
+    }
+    return `Paid upto ${appendSuffix(Number(sem))} semester`;
+  }, [student]);
+
   return (
     <>
       <br />
       <Card>
-        <Form
-          {...layout}
-          form={form}
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
         >
-          <Form.Item
-            label="Student Serial Number"
-            name="studentSerialNumber"
-            rules={[{ required: true, message: 'Please input!' }]}
+          <Form
+            {...layout}
+            style={{ maxWidth: '600px', flex: 3 }}
+            form={form}
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <Input
-              onBlur={() => {
-                // refetch({
-                //   studentSerialNumber: form.getFieldValue('studentSerialNumber'),
-                // });
-                if (!form.getFieldValue('studentSerialNumber')) {
-                  return;
-                }
-                loadBookLogs({
-                  variables: {
-                    studentSerialNumber: form.getFieldValue('studentSerialNumber'),
-                  },
-                });
-              }}
-            />
-          </Form.Item>
+            <Form.Item
+              label="Student Serial Number"
+              name="studentSerialNumber"
+              rules={[{ required: true, message: 'Please input!' }]}
+            >
+              <Input
+                onBlur={() => {
+                  // refetch({
+                  //   studentSerialNumber: form.getFieldValue('studentSerialNumber'),
+                  // });
+                  if (!form.getFieldValue('studentSerialNumber')) {
+                    return;
+                  }
+                  loadBookLogs({
+                    variables: {
+                      studentSerialNumber: form.getFieldValue('studentSerialNumber'),
+                    },
+                  });
+                  loadStudent({
+                    variables: {
+                      serialNumber: form.getFieldValue('studentSerialNumber'),
+                    },
+                  });
+                }}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label="Book Serial Number"
-            name="bookSerialNumber"
-            rules={[{ required: true, message: 'Please input!' }]}
-          >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              label="Book Serial Number"
+              name="bookSerialNumber"
+              rules={[{ required: true, message: 'Please input!' }]}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button shape="round" icon={<PlusOutlined />} type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button shape="round" icon={<PlusOutlined />} type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
 
-          <Form.Item name="renew" valuePropName="checked" wrapperCol={{ offset: 5, span: 16 }}>
-            <Checkbox>Renew</Checkbox>
-          </Form.Item>
-        </Form>
+            <Form.Item name="renew" valuePropName="checked" {...tailLayout}>
+              <Checkbox>Renew</Checkbox>
+            </Form.Item>
+          </Form>
+          <div style={{ flex: 1 }}>
+            {student && (
+            <>
+              <Space>
+                <Image
+                  height={130}
+                  src={`/img/${get(student, 'photo', '')}`}
+                />
+                {/* <div>
+                  <Title level={5} type="success">{get(student, 'name', '')}</Title>
+                </div> */}
+              </Space>
+              <br />
+              <br />
+              <Statistic
+                title={`${get(student, 'name', '')} Fee Status`}
+                value={feeVal}
+                valueStyle={{ color: '#3f8600' }}
+              />
+            </>
+            )}
+          </div>
+        </div>
       </Card>
       <br />
       {bookLogs && (

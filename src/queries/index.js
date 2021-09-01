@@ -119,8 +119,8 @@ export const DELETE_STUDENT = gql`
 `;
 
 export const GET_STUDENT = gql`
-  query GetStudent($id:ID!){
-    getStudent(id:$id){
+  query GetStudent($id:ID,$serialNumber:String){
+    getStudent(id:$id,serialNumber:$serialNumber){
       id
       name
       serialNumber

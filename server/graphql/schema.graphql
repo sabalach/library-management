@@ -85,7 +85,7 @@ type Query {
   getBook(id: ID!): Book!
 
   getStudents(levelId: ID, departmentId: ID): [Student]
-  getStudent(id: ID!): Student!
+  getStudent(id: ID, serialNumber: String): Student!
 
   getBookLogs(studentSerialNumber: String): [BookLog]
   getBookLog(id: ID!): BookLog!

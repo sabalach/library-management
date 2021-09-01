@@ -74,8 +74,13 @@ export default function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login').then(() => {
+    if (!token && router.route !== '/login') {
+      router.push({
+        pathname: '/login',
+        query: {
+          ...(router.route !== '/' ? { fwd: router.route } : {}),
+        },
+      }).then(() => {
         setLoading(false);
       });
     } else {
@@ -83,7 +88,7 @@ export default function MyApp({ Component, pageProps }) {
     }
   }, []);
   return (
-    <ThemeSwitcherProvider defaultTheme="dark" themeMap={themes}>
+    <ThemeSwitcherProvider defaultTheme="light" themeMap={themes}>
       <ApolloProvider client={client}>
         <CurrentStudentContext.Provider value={{ currentStudent, setCurrentStudent }}>
           <NextNprogress

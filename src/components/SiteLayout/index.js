@@ -4,7 +4,7 @@ import {
   Space,
 } from 'antd';
 import {
-  AccountBookOutlined,
+  // AccountBookOutlined,
   AppstoreOutlined,
   BookFilled,
   ContactsFilled,
@@ -32,9 +32,9 @@ function SiteLayout({ children, subTitle = '' }) {
   const { switcher, themes, currentTheme } = useThemeSwitcher();
   useEffect(() => {
     const prevTheme = localStorage.getItem('theme');
-    if (prevTheme === 'light') {
+    if (prevTheme === 'dark') {
       switcher({
-        theme: themes.light,
+        theme: themes.dark,
       });
     }
   }, []);
@@ -49,7 +49,7 @@ function SiteLayout({ children, subTitle = '' }) {
       <Sider
         // theme={currentTheme}
         theme="dark"
-        hidden={router.route === '/login'}
+        hidden={router.route === '/login' || router.route === '/account'}
       >
         <div style={{
           padding: '10px',
@@ -83,9 +83,9 @@ function SiteLayout({ children, subTitle = '' }) {
             <Menu.Item key="deleteStudents">Delete</Menu.Item>
             <Menu.Item key="editStudent" disabled>Edit</Menu.Item>
           </SubMenu>
-          <Menu.Item key="account" icon={<AccountBookOutlined />}>
+          {/* <Menu.Item key="account" icon={<AccountBookOutlined />}>
             Account
-          </Menu.Item>
+          </Menu.Item> */}
           <SubMenu key="book" icon={<BookFilled />} title="Book">
             <Menu.Item key="allBook">All</Menu.Item>
             <Menu.Item key="newBook">New</Menu.Item>

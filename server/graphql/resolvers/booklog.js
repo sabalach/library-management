@@ -48,6 +48,9 @@ module.exports = {
       if (!book) {
         throw new UserInputError('Book not found.');
       }
+      if (book.condition === 'LOST' || book.condition === 'DAMAGED') {
+        throw new UserInputError(`Cannot borrow ${String(book.condition).toLowerCase()} book`);
+      }
       const existingBookLog = await BookLog.findOne({
         bookId: book._id,
         returnedDate: null,
@@ -152,6 +155,9 @@ module.exports = {
       const book = await Book.findOne({ serialNumber: bookSerialNumber, deleted: false });
       if (!book) {
         throw new UserInputError('Book not found.');
+      }
+      if (book.condition === 'LOST' || book.condition === 'DAMAGED') {
+        throw new UserInputError(`Cannot borrow ${String(book.condition).toLowerCase()} book`);
       }
       const existingBookLog = await BookLog.findOne({
         bookId: book._id,

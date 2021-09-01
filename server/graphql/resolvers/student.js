@@ -22,8 +22,14 @@ module.exports = {
         deleted: false,
       });
     },
-    async getStudent(_, { id }) {
-      return Student.findById(id);
+    async getStudent(_, { id, serialNumber }) {
+      if (id) {
+        return Student.findById(id);
+      }
+      if (serialNumber) {
+        return Student.findOne({ serialNumber });
+      }
+      throw new UserInputError('Either id or serialnumber must be provided');
     },
   },
   Mutation: {

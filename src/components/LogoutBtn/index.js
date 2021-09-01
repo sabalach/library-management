@@ -12,7 +12,12 @@ function LogoutBtn() {
         <Button
           onClick={() => {
             localStorage.removeItem('token');
-            router.push('/login');
+            router.push({
+              pathname: '/login',
+              query: {
+                ...(router.route !== '/' ? { fwd: router.route } : {}),
+              },
+            });
           }}
           danger
           shape="circle"

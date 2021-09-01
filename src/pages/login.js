@@ -9,6 +9,7 @@ import { LOGIN } from '../queries';
 const Login = () => {
   const [login] = useMutation(LOGIN);
   const router = useRouter();
+  console.log({ router });
   const onFinish = async (values) => {
     try {
       message.loading({
@@ -35,7 +36,7 @@ const Login = () => {
         key: 'login',
         content: 'Sucessfylly logged in',
       });
-      router.push('/dashboard');
+      router.push(router.query.fwd ? router.query.fwd : '/dashboard');
     } catch (error) {
       message.error({
         key: 'login',

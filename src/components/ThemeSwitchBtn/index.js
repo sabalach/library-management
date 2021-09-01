@@ -7,7 +7,6 @@ function ThemeSwitchBtn() {
   const {
     switcher, themes, currentTheme, status,
   } = useThemeSwitcher();
-  console.log({ currentTheme });
   return (
     <Switch
       checkedChildren={<BulbFilled />}
