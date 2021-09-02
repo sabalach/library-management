@@ -3,7 +3,7 @@ import { Modal, Button, message } from 'antd';
 import Barcode from 'react-barcode';
 import get from 'lodash/get';
 import { useQuery } from '@apollo/client';
-import { toJpeg } from 'html-to-image';
+import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import { DownloadOutlined } from '@ant-design/icons';
 import { Textfit } from 'react-textfit';
@@ -38,13 +38,13 @@ function IdCardModal({
       key: `idcarddownload${get(currentIdCard, 'serialNumber', '')}`,
       content: `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')} Downloading`,
     });
-    toJpeg(idCardEl.current, { pixelRatio: 3, cacheBust: true })
+    toPng(idCardEl.current, { pixelRatio: 3, cacheBust: true })
       .then((dataUrl) => {
         message.success({
           key: `idcarddownload${get(currentIdCard, 'serialNumber', '')}`,
           content: `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')} Downloaded`,
         });
-        download(dataUrl, `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')}.jpg`);
+        download(dataUrl, `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')}.png`);
       });
   };
 

@@ -12,11 +12,13 @@ import React, {
   useContext, useEffect, useMemo, useState,
 } from 'react';
 import { Table } from 'ant-table-extensions';
+import get from 'lodash/get';
 import IdCardModal from '../components/IdCardModal';
 import CurrentStudentContext from '../contexts/CurrentStudent';
 import {
   DELETE_STUDENT, GET_DEPARTMENTS, GET_LEVELS, GET_STUDENTS,
 } from '../queries';
+import { appendSuffix } from '../utils';
 
 const { Option } = Select;
 const columns = [
@@ -197,6 +199,15 @@ const columns = [
             icon={<CheckOutlined />}
             onClick={() => {
               setCurrentStudent(record);
+              let feePaidMsg = '';
+              const sem = get(record, 'feePaidUpto', 'unset');
+              if (sem === 'unset') {
+                feePaidMsg = 'Fee Not Updated';
+              } else if (sem === 0) {
+                feePaidMsg = 'Not paid';
+              } else {
+                feePaidMsg = `Paid upto ${appendSuffix(Number(sem))} semester`;
+              }
               message.info({
                 icon: <div />,
                 content: (
@@ -238,6 +249,7 @@ const columns = [
                       <br />
                       {`${record.level.name}`}
                       <br />
+                      {feePaidMsg}
                     </div>
                   </Card>
                 ),
