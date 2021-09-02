@@ -36,15 +36,15 @@ function IdCardModal({
     }
     message.loading({
       key: `idcarddownload${get(currentIdCard, 'serialNumber', '')}`,
-      content: `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')} Downloading`,
+      content: `${get(currentIdCard, 'serialNumber', '')} Downloading`,
     });
     toPng(idCardEl.current, { pixelRatio: 3, cacheBust: true })
       .then((dataUrl) => {
         message.success({
           key: `idcarddownload${get(currentIdCard, 'serialNumber', '')}`,
-          content: `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')} Downloaded`,
+          content: `${get(currentIdCard, 'serialNumber', '')} Downloaded`,
         });
-        download(dataUrl, `${get(currentIdCard, 'level.abbreviation', '')}${get(currentIdCard, 'department.abbreviation', '')}${get(currentIdCard, 'serialNumber', '')}.png`);
+        download(dataUrl, `${get(currentIdCard, 'serialNumber', '')}.png`);
       });
   };
 
